@@ -1,7 +1,9 @@
-package com.job.carwash_getfreewashescoupons;
+package com.job.carwash_getfreewashescoupons.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.job.carwash_getfreewashescoupons.R;
 
 public class MainActivity extends AppCompatActivity {
 
