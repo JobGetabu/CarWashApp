@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "699393696139",
+    "firebase_url": "https://carwash-a8345.firebaseio.com",
+    "project_id": "carwash-a8345",
+    "storage_bucket": "carwash-a8345.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:699393696139:android:081af092bc973313",
+        "android_client_info": {
+          "package_name": "com.job.carwash_getfreewashescoupons"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "699393696139-h1stf13vmhagko7oev4ij9hn9q9mp9ki.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.job.carwash_getfreewashescoupons",
+            "certificate_hash": "08707c39ce53fa034d11722ba7cd4fd155e54ec8"
+          }
+        },
+        {
+          "client_id": "699393696139-85mbe4een3dfhi5ls2ts2v4kmvaj13jf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDediAIg6MnYJBGtRP7k3yf2UgqwhXF4MI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "699393696139-85mbe4een3dfhi5ls2ts2v4kmvaj13jf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
