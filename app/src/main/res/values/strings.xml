@@ -6,6 +6,7 @@
     <string name="divider_bullet">•</string>
     <string name="rating_mock">(20)</string>
     <string name="add_customer">Add Customer</string>
+    <string name="add_wash">Add Wash Entry</string>
 
     <!-- Price filters -->
     <string-array name="vehicletypes">
@@ -16,5 +17,15 @@
         <item>Pickup </item>
         <item>Tipper </item>
         <item>Trailer </item>
+    </string-array>
+
+    <string-array name="washprice">
+        <item>Car @ KES 150</item>
+        <item>Canter @ KES 300</item>
+        <item>Motorbike @ KES 50</item>
+        <item>Nissan @ KES 150</item>
+        <item>Pickup @ 150</item>
+        <item>Tipper @ KES 500</item>
+        <item>Trailer KES 800</item>
     </string-array>
 </resources>

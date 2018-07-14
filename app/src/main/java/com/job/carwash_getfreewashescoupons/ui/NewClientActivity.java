@@ -35,6 +35,9 @@ public class NewClientActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_client);
         ButterKnife.bind(this);
+
+        setSupportActionBar(clientToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @OnClick(R.id.client_add_btn)
