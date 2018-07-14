@@ -7,10 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".ui.LoginActivity"
     android:background="@drawable/login_bg"
+    android:fitsSystemWindows="true"
     >
 
     <Button
-        android:id="@+id/frgbtn_login_google"
+        android:id="@+id/login_google"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -41,7 +42,7 @@
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/frgbtn_login_google"
+        app:layout_constraintBottom_toTopOf="@+id/login_google"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
