@@ -13,16 +13,21 @@ public class CustomerInfo {
     private String phonenumber;
     private String vehiclereg;
     private String vehicletype;
+    private String ownerid;
     private Timestamp regdate;
 
+    public CustomerInfo() {
+    }
+
     public CustomerInfo(String customerId, String firstname, String lastname,
-                        String phonenumber, String vehiclereg, String vehicletype, Timestamp regdate) {
+                        String phonenumber, String vehiclereg, String vehicletype, String ownerid, Timestamp regdate) {
         this.customerId = customerId;
         this.firstname = firstname;
         this.lastname = lastname;
         this.phonenumber = phonenumber;
         this.vehiclereg = vehiclereg;
         this.vehicletype = vehicletype;
+        this.ownerid = ownerid;
         this.regdate = regdate;
     }
 
@@ -80,6 +85,14 @@ public class CustomerInfo {
 
     public void setRegdate(Timestamp regdate) {
         this.regdate = regdate;
+    }
+
+    public String getOwnerid() {
+        return ownerid;
+    }
+
+    public void setOwnerid(String ownerid) {
+        this.ownerid = ownerid;
     }
 
     @Override
