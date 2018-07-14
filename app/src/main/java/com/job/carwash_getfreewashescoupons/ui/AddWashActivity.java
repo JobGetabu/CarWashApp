@@ -28,6 +28,9 @@ public class AddWashActivity extends AppCompatActivity {
     @BindView(R.id.wash_add_btn)
     TextView washAddBtn;
 
+    public static final String CUSTOMERINFOEXTRA = "CUSTOMERINFOEXTRA";
+    public static final String CUSTOMERIDEXTRA = "CUSTOMERIDEXTRA";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
