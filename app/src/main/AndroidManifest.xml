@@ -29,7 +29,9 @@
             android:name=".ui.AddWashActivity"
             android:parentActivityName=".ui.MainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.LoginActivity"></activity>
+        <activity android:name=".ui.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.TransparentTheme" />
 
         <meta-data
             android:name="preloaded_fonts"

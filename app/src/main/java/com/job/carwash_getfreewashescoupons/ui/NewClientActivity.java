@@ -1,5 +1,6 @@
 package com.job.carwash_getfreewashescoupons.ui;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -8,11 +9,13 @@ import android.util.Log;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.job.carwash_getfreewashescoupons.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.michaelrocks.libphonenumber.android.NumberParseException;
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
 import io.michaelrocks.libphonenumber.android.Phonenumber;
@@ -36,6 +39,7 @@ public class NewClientActivity extends AppCompatActivity {
 
     private static final String TAG = "NewClient";
     private PhoneNumberUtil mPhoneNumberUtil;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,21 +50,34 @@ public class NewClientActivity extends AppCompatActivity {
         setSupportActionBar(clientToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //firebase
+        mAuth = FirebaseAuth.getInstance();
+
         mPhoneNumberUtil = PhoneNumberUtil.createInstance(this);
+
     }
 
     @OnClick(R.id.client_add_btn)
     public void onViewClicked() {
 
         if (validate()){
-            String firstname = clientFirstname.getEditText().getText().toString();
-            String lname = clientLastname.getEditText().getText().toString();
-            String phone = clientPhone.getEditText().getText().toString();
-            String vehReg = clientVehiclereg.getEditText().getText().toString();
-            String vehType = clientSpinner.getSelectedItem().toString();
-
-
+            saveToDb();
         }
+    }
+
+    private void saveToDb(){
+        final SweetAlertDialog pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#f9ab60"));
+        pDialog.setTitleText("Saving Changes...");
+        pDialog.setCancelable(false);
+        pDialog.show();
+
+        String firstname = clientFirstname.getEditText().getText().toString();
+        String lname = clientLastname.getEditText().getText().toString();
+        String phone = clientPhone.getEditText().getText().toString();
+        String vehReg = clientVehiclereg.getEditText().getText().toString();
+        String vehType = clientSpinner.getSelectedItem().toString();
+
     }
 
     public boolean validate() {
