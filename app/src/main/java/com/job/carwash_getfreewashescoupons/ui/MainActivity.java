@@ -9,6 +9,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.job.carwash_getfreewashescoupons.R;
@@ -27,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private FilterDialogFragment mFilterDialog;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +44,15 @@ public class MainActivity extends AppCompatActivity {
         //firebase
         mAuth = FirebaseAuth.getInstance();
         authListner();
+
+        //login credentials
+        // Configure Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         // Filter Dialog
         mFilterDialog = new FilterDialogFragment();
@@ -56,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.main_search:
                 break;
             case R.id.main_logout:
+                signOutGoogle();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -102,5 +118,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
+    }
+
+    private void signOutGoogle() {
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        mAuth.signOut();
+                        sendToLogin();
+                    }
+                });
     }
 }
