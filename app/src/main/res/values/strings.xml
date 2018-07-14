@@ -3,4 +3,5 @@
     <string name="app_name_store">Car Wash - Get Free washes &amp; Coupons</string>
 
     <string name="message_no_results">Oops, couldn\'t find any results\nthat matched your filter</string>
+    <string name="divider_bullet">•</string>
 </resources>
