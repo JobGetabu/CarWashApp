@@ -8,6 +8,11 @@
     <string name="add_customer">Add Customer</string>
     <string name="add_wash">Add Wash Entry</string>
 
+    <string name="header_filters">Filter</string>
+    <string name="search">Search</string>
+    <string name="cancel">Cancel</string>
+    <string name="apply">Apply</string>
+
     <!-- Price filters -->
     <string-array name="vehicletypes">
         <item>Car</item>
@@ -27,5 +32,29 @@
         <item>Pickup @ 150</item>
         <item>Tipper @ KES 500</item>
         <item>Trailer KES 800</item>
+    </string-array>
+
+    <string-array name="vehicletypesfilter">
+        <item>ALL Vehicles</item>
+        <item>Car</item>
+        <item>Canter</item>
+        <item>Motorbike</item>
+        <item>Nissan</item>
+        <item>Pickup </item>
+        <item>Tipper </item>
+        <item>Trailer </item>
+    </string-array>
+    <string-array name="prices">
+        <item>ALL Prices</item>
+        <item>KES 50</item>
+        <item>KES 150</item>
+        <item>KES 300</item>
+        <item>KES 500</item>
+        <item>KES 800</item>
+    </string-array>
+
+    <string-array name="date_filter">
+        <item>Date: From Recent</item>
+        <item>Date: From Past</item>
     </string-array>
 </resources>

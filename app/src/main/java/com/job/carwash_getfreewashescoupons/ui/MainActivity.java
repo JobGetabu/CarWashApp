@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.fab_button)
     FloatingActionButton fabButton;
 
+    private FilterDialogFragment mFilterDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setSupportActionBar(mToolbar);
+
+        // Filter Dialog
+        mFilterDialog = new FilterDialogFragment();
 
     }
 
@@ -50,7 +55,13 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.fab_button)
     public void onViewClicked() {
-        Intent intent = new Intent(this,NewClientActivity.class);
+        Intent intent = new Intent(this, NewClientActivity.class);
         startActivity(intent);
+    }
+
+    @OnClick(R.id.filter_bar)
+    public void onFilterClicked() {
+        // Show the dialog containing filter options
+        mFilterDialog.show(getSupportFragmentManager(), FilterDialogFragment.TAG);
     }
 }

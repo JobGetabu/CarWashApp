@@ -31,6 +31,9 @@ public class AddWashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_wash);
         ButterKnife.bind(this);
+
+        setSupportActionBar(washToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @OnClick(R.id.wash_add_btn)
