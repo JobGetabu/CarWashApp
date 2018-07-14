@@ -5,4 +5,16 @@
     <string name="message_no_results">Oops, couldn\'t find any results\nthat matched your filter</string>
     <string name="divider_bullet">•</string>
     <string name="rating_mock">(20)</string>
+    <string name="add_customer">Add Customer</string>
+
+    <!-- Price filters -->
+    <string-array name="vehicletypes">
+        <item>Car</item>
+        <item>Canter</item>
+        <item>Motorbike</item>
+        <item>Nissan</item>
+        <item>Pickup </item>
+        <item>Tipper </item>
+        <item>Trailer </item>
+    </string-array>
 </resources>
