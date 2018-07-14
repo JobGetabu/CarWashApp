@@ -59,7 +59,6 @@ public class AddWashActivity extends AppCompatActivity {
         } else {
             washVehiclereg.setError(null);
         }
-
         return valid;
     }
 }

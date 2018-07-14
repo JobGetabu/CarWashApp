@@ -51,6 +51,16 @@ public class NewClientActivity extends AppCompatActivity {
 
     @OnClick(R.id.client_add_btn)
     public void onViewClicked() {
+
+        if (validate()){
+            String firstname = clientFirstname.getEditText().getText().toString();
+            String lname = clientLastname.getEditText().getText().toString();
+            String phone = clientPhone.getEditText().getText().toString();
+            String vehReg = clientVehiclereg.getEditText().getText().toString();
+            String vehType = clientSpinner.getSelectedItem().toString();
+
+
+        }
     }
 
     public boolean validate() {
