@@ -39,4 +39,27 @@ public class AddWashActivity extends AppCompatActivity {
     @OnClick(R.id.wash_add_btn)
     public void onViewClicked() {
     }
+
+    public boolean validate() {
+        boolean valid = true;
+
+        String name = washName.getEditText().getText().toString();
+        String vehReg = washVehiclereg.getEditText().getText().toString();
+
+        if (name.isEmpty()) {
+            washName.setError("enter a name");
+            valid = false;
+        } else {
+            washName.setError(null);
+        }
+
+        if (vehReg.isEmpty()) {
+            washVehiclereg.setError("enter vehicle registration");
+            valid = false;
+        } else {
+            washVehiclereg.setError(null);
+        }
+
+        return valid;
+    }
 }
