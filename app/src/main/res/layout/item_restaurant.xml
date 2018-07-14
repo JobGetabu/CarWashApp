@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -13,7 +14,7 @@
         android:layout_height="60dp"
         android:background="#757575"
         android:scaleType="centerCrop"
-        android:src="@drawable/food_1" />
+        app:srcCompat="@drawable/ic_car" />
 
     <TextView
         android:id="@+id/restaurant_item_name"
@@ -30,9 +31,8 @@
         android:maxLines="1"
         tools:text="Foo's Bar" />
 
-    <me.zhanghai.android.materialratingbar.MaterialRatingBar
+    <TextView
         android:id="@+id/restaurant_item_rating"
-        style="@style/Widget.MaterialRatingBar.RatingBar.Indicator.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/restaurant_item_name"
@@ -67,7 +67,7 @@
         style="@style/AppTheme.TextDivider"
         android:layout_alignTop="@+id/restaurant_item_category"
         android:layout_toRightOf="@+id/restaurant_item_category"
-        android:text="@string/divider_bullet" />
+        android:text="divider_bullet" />
 
     <TextView
         android:id="@+id/restaurant_item_city"
