@@ -5,13 +5,18 @@ package com.job.carwash_getfreewashescoupons.datasource;
  */
 public class CustomerExtra {
     private String customerId;
+    private String ownerid;
     private String name;
     private int visits;
     private int coupons;
     private double rating;
 
-    public CustomerExtra(String customerId, String name, int visits, int coupons, double rating) {
+    public CustomerExtra() {
+    }
+
+    public CustomerExtra(String customerId, String ownerid, String name, int visits, int coupons, double rating) {
         this.customerId = customerId;
+        this.ownerid = ownerid;
         this.name = name;
         this.visits = visits;
         this.coupons = coupons;
@@ -56,6 +61,14 @@ public class CustomerExtra {
 
     public void setRating(double rating) {
         this.rating = rating;
+    }
+
+    public String getOwnerid() {
+        return ownerid;
+    }
+
+    public void setOwnerid(String ownerid) {
+        this.ownerid = ownerid;
     }
 
     @Override
