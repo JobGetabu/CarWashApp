@@ -1,5 +1,6 @@
 package com.job.carwash_getfreewashescoupons.ui;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import com.job.carwash_getfreewashescoupons.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class AddWashActivity extends AppCompatActivity {
 
@@ -38,6 +40,22 @@ public class AddWashActivity extends AppCompatActivity {
 
     @OnClick(R.id.wash_add_btn)
     public void onViewClicked() {
+    }
+
+    private void errorPrompt() {
+        new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                .setTitleText("Oops...")
+                .setContentText("Something went wrong!")
+                .show();
+    }
+
+    private void saveToDb(){
+
+        final SweetAlertDialog pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#e61cb2d7"));
+        pDialog.setTitleText("Saving Entry...");
+        pDialog.setCancelable(false);
+        pDialog.show();
     }
 
     public boolean validate() {

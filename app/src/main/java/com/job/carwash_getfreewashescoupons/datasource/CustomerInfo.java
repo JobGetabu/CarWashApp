@@ -1,11 +1,14 @@
 package com.job.carwash_getfreewashescoupons.datasource;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.Timestamp;
 
 /**
  * Created by Job on Saturday : 7/14/2018.
  */
-public class CustomerInfo {
+public class CustomerInfo implements Parcelable {
 
     private String customerId;
     private String firstname;
@@ -107,4 +110,45 @@ public class CustomerInfo {
                 ", regdate=" + regdate +
                 '}';
     }
+
+    //does not parcel timestamp
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.customerId);
+        dest.writeString(this.firstname);
+        dest.writeString(this.lastname);
+        dest.writeString(this.phonenumber);
+        dest.writeString(this.vehiclereg);
+        dest.writeString(this.vehicletype);
+        dest.writeString(this.ownerid);
+
+    }
+
+    protected CustomerInfo(Parcel in) {
+        this.customerId = in.readString();
+        this.firstname = in.readString();
+        this.lastname = in.readString();
+        this.phonenumber = in.readString();
+        this.vehiclereg = in.readString();
+        this.vehicletype = in.readString();
+        this.ownerid = in.readString();
+    }
+
+    public static final Creator<CustomerInfo> CREATOR = new Creator<CustomerInfo>() {
+        @Override
+        public CustomerInfo createFromParcel(Parcel source) {
+            return new CustomerInfo(source);
+        }
+
+        @Override
+        public CustomerInfo[] newArray(int size) {
+            return new CustomerInfo[size];
+        }
+    };
 }

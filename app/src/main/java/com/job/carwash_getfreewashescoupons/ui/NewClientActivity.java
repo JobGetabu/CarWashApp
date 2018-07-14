@@ -72,12 +72,12 @@ public class NewClientActivity extends AppCompatActivity {
     @OnClick(R.id.client_add_btn)
     public void onViewClicked() {
 
-        if (validate()){
+        if (validate()) {
             saveToDb();
         }
     }
 
-    private void saveToDb(){
+    private void saveToDb() {
         final SweetAlertDialog pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
         pDialog.getProgressHelper().setBarColor(Color.parseColor("#e61cb2d7"));
         pDialog.setTitleText("Saving Changes...");
@@ -92,14 +92,14 @@ public class NewClientActivity extends AppCompatActivity {
 
         String key = mFirestore.collection(CUSTOMERINFOCOL).document().getId();
 
-        Map<String,Object> clientMap= new HashMap<>();
-        clientMap.put("customerId",key);
-        clientMap.put("firstname",firstname);
-        clientMap.put("lastname",lname);
-        clientMap.put("phonenumber",phone);
-        clientMap.put("vehiclereg",vehReg);
-        clientMap.put("vehicletype",vehType);
-        clientMap.put("ownerid",mAuth.getCurrentUser().getUid());
+        Map<String, Object> clientMap = new HashMap<>();
+        clientMap.put("customerId", key);
+        clientMap.put("firstname", firstname);
+        clientMap.put("lastname", lname);
+        clientMap.put("phonenumber", phone);
+        clientMap.put("vehiclereg", vehReg);
+        clientMap.put("vehicletype", vehType);
+        clientMap.put("ownerid", mAuth.getCurrentUser().getUid());
         clientMap.put("regdate", FieldValue.serverTimestamp());
 
         mFirestore.collection(CUSTOMERINFOCOL).document(key)
@@ -107,18 +107,18 @@ public class NewClientActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> dbtask) {
-                        if (dbtask.isSuccessful()){
+                        if (dbtask.isSuccessful()) {
                             pDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
                             pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                 @Override
                                 public void onClick(SweetAlertDialog sDialog) {
                                     sDialog.dismissWithAnimation();
-                                    startActivity(new Intent(NewClientActivity.this,MainActivity.class));
+                                    startActivity(new Intent(NewClientActivity.this, MainActivity.class));
+                                    finish();
                                 }
                             });
 
-                            finish();
-                        }else {
+                        } else {
                             pDialog.dismiss();
                             Log.d(TAG, "onComplete: error" + dbtask.getException().toString());
                             errorPrompt();
@@ -165,7 +165,7 @@ public class NewClientActivity extends AppCompatActivity {
         try {
             kenyaNumberProto = mPhoneNumberUtil.parse(phone, "KE");
         } catch (NumberParseException e) {
-            Log.e(TAG, "validate: NumberParseException was thrown: ",e);
+            Log.e(TAG, "validate: NumberParseException was thrown: ", e);
         }
 
         if (phone.isEmpty() || !mPhoneNumberUtil.isValidNumber(kenyaNumberProto)) {
