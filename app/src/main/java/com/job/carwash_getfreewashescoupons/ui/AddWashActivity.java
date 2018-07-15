@@ -66,6 +66,9 @@ public class AddWashActivity extends AppCompatActivity {
 
     @OnClick(R.id.wash_add_btn)
     public void onViewClicked() {
+        if (validate()){
+
+        }
     }
 
     private void errorPrompt() {

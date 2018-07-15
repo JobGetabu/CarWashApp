@@ -9,9 +9,9 @@ import com.google.firebase.Timestamp;
 public class Wash {
     private Timestamp timestamp;
     private String customerId;
-    private String paid;
+    private Boolean paid;
 
-    public Wash(Timestamp timestamp, String customerId, String paid) {
+    public Wash(Timestamp timestamp, String customerId, Boolean paid) {
         this.timestamp = timestamp;
         this.customerId = customerId;
         this.paid = paid;
@@ -33,11 +33,11 @@ public class Wash {
         this.customerId = customerId;
     }
 
-    public String getPaid() {
+    public Boolean getPaid() {
         return paid;
     }
 
-    public void setPaid(String paid) {
+    public void setPaid(Boolean paid) {
         this.paid = paid;
     }
 
