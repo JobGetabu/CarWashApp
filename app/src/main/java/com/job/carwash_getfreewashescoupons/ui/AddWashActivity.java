@@ -211,8 +211,8 @@ public class AddWashActivity extends AppCompatActivity {
             public Void apply(Transaction transaction) throws FirebaseFirestoreException {
                 DocumentSnapshot snapshot = transaction.get(cusRef);
 
-                //int newVisit = snapshot.get("population") + 1;
-                //transaction.update(sfDocRef, "population", newPopulation);
+                double newVisit = snapshot.getDouble("visits") + 1;
+                transaction.update(cusRef, "visits", newVisit);
 
                 // Success
                 return null;
