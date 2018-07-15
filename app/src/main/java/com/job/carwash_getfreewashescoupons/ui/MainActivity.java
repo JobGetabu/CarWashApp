@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FilterDialogFragment mFilterDialog;
     private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
     private FirebaseFirestore mFirestore;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private GoogleSignInClient mGoogleSignInClient;
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         //firebase
         mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
         authListner();
 
         initList();
@@ -146,12 +148,6 @@ public class MainActivity extends AppCompatActivity {
         if (adapter != null) {
             adapter.stopListening();
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        adapter.notifyDataSetChanged();
     }
 
     private void sendToLogin() {
@@ -251,6 +247,15 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.d(TAG, "onError: ", e);
             }
+
+            @Override
+            public void startListening() {
+                super.startListening();
+
+                Log.d(TAG, "startListening: started ");
+            }
+
+
         };
 
         adapter.startListening();

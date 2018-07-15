@@ -14,26 +14,26 @@ public class Rating {
     public Rating() {
     }
 
-    public double getRating(){
-        if (isBetween(visits, 1, 2)) {
-            return 0.2;
+    public float setRating(int myvisits){
+        if (isBetween(myvisits, 1, 2)) {
+            return 0.2F * 5;
         } else if (isBetween(visits, 2, 4)) {
-            return 0.4;
+            return 0.4F * 5;
         }else if (isBetween(visits, 5, 6)) {
-            return 0.5;
+            return 0.5F * 5;
         }else if (isBetween(visits, 7, 10)) {
-            return 0.6;
+            return 0.6F * 5;
         }else if (isBetween(visits, 11, 13)) {
-            return 0.7;
+            return 0.7F * 5;
         }else if (isBetween(visits, 14, 16)) {
-            return 0.8;
+            return 0.8F * 5;
         }else if (isBetween(visits, 17, 100)) {
-            return 1.0;
+            return 1.0F * 5;
         }
         return 0;
     }
 
-    public String getPrice(String vehicletype){
+    public String getPriceMock(String vehicletype){
         switch (vehicletype){
             case "Car": return "$$";
 
@@ -48,6 +48,46 @@ public class Rating {
             case "Tipper": return "$$$";
 
             case "Trailer": return "$$$";
+
+            default: return "";
+        }
+    }
+
+    public String getPrice(String vehicletype){
+        switch (vehicletype){
+            case "Car": return "KES 150";
+
+            case "Canter": return "KES 300";
+
+            case "Motorbike": return "KES 50";
+
+            case "Nissan": return "KES 150";
+
+            case "Pickup": return "KES 150";
+
+            case "Tipper": return "KES 500";
+
+            case "Trailer": return "KES 800";
+
+            default: return "";
+        }
+    }
+
+    public String getDay(int day){
+        switch (day){
+            case 7: return "SAT";
+
+            case 6: return "FRI";
+
+            case 5: return "THUR";
+
+            case 4: return "WED";
+
+            case 3: return "TUE";
+
+            case 2: return "MON";
+
+            case 1: return "SUN";
 
             default: return "";
         }

@@ -1,25 +1,39 @@
 package com.job.carwash_getfreewashescoupons.util;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.job.carwash_getfreewashescoupons.R;
 import com.job.carwash_getfreewashescoupons.appExecutors.DefaultExecutorSupplier;
 import com.job.carwash_getfreewashescoupons.datasource.CustomerExtra;
 import com.job.carwash_getfreewashescoupons.datasource.CustomerInfo;
+import com.job.carwash_getfreewashescoupons.ui.AddWashActivity;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
+
+import static com.job.carwash_getfreewashescoupons.ui.AddWashActivity.CUSTOMERIDEXTRA;
 
 /**
  * Created by Job on Sunday : 7/15/2018.
@@ -67,7 +81,11 @@ public class ClientViewHolder extends RecyclerView.ViewHolder {
     private FirebaseFirestore mFirestore;
     private Rating rating;
 
+    private static final String TAG = "ClientVH";
+
     private String CUSTOMEREXTRACOL = "CustomerExtra";
+    private String WASHCOL = "Wash";
+    private String cusID = "";
 
     public ClientViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -87,17 +105,18 @@ public class ClientViewHolder extends RecyclerView.ViewHolder {
 
         itemColName.setText(customerInfo.getFirstname() + " " + customerInfo.getLastname());
         itemColPhonenum.setText(customerInfo.getPhonenumber());
-        itemColPrice.setText(rating.getPrice(customerInfo.getVehicletype()));
+        itemColPrice.setText(rating.getPriceMock(customerInfo.getVehicletype()));
 
         cellName.setText(customerInfo.getFirstname() + " " + customerInfo.getLastname());
         cellTypeVehicle.setText(customerInfo.getVehicletype());
         cellVehicleReg.setText(customerInfo.getVehiclereg());
+        itemColPrice.setText(rating.getPrice(customerInfo.getVehicletype()));
 
+        cusID = customerInfo.getCustomerId();
     }
 
 
-    public void setUpUiExpanded(String customerId) {
-
+    public void setUpUiExpanded(final String customerId) {
 
         mFirestore.collection(CUSTOMEREXTRACOL).document(customerId)
                 .get()
@@ -119,6 +138,11 @@ public class ClientViewHolder extends RecyclerView.ViewHolder {
 
                                                 cellVisits.setText(customerExtra.getVisits());
                                                 cellCoupon.setText(customerExtra.getCoupons());
+                                                cellRatingNums.setText("(" + customerExtra.getVisits() + ")");
+                                                itemColRating.setRating(rating.setRating(customerExtra.getVisits()));
+                                                cellRatingStars.setRating(rating.setRating(customerExtra.getVisits()));
+
+                                                setWashData(customerId);
                                             }
 
                                         }
@@ -128,7 +152,57 @@ public class ClientViewHolder extends RecyclerView.ViewHolder {
                 });
     }
 
+    private void setWashData(String customerId) {
+        mFirestore.collection(WASHCOL)
+                .orderBy("timestamp", Query.Direction.DESCENDING)
+                .whereEqualTo("customerId", customerId)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull final Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            DefaultExecutorSupplier.getInstance().forMainThreadTasks()
+                                    .execute(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            List<DocumentSnapshot> washdocs = task.getResult().getDocuments();
+
+                                            Log.d(TAG, "run: wash list 0 => "+washdocs.get(0));
+                                            dealTime(washdocs.get(0).getTimestamp("timestamp"));
+                                        }
+                                    });
+                        }
+                    }
+                });
+    }
+
+    private void dealTime(Timestamp timestamp) {
+        //Timestamp timestamp = model.getTimestamp();
+        if (timestamp != null) {
+
+            Date date = timestamp.toDate();
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+            DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+            DateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
+
+
+            String day = rating.getDay(c.get(Calendar.DAY_OF_WEEK));
+            int daydate = c.get(Calendar.DAY_OF_MONTH);
+
+            cellDate.setText(day + " " + daydate);
+            cellYear.setText(c.get(Calendar.YEAR));
+
+        }
+    }
+
     @OnClick(R.id.cell_add_btn)
     public void onViewClicked() {
+
+        Intent intent = new Intent(mContext, AddWashActivity.class);
+        intent.putExtra(CUSTOMERIDEXTRA, cusID);
+        mContext.startActivity(intent);
     }
 }
