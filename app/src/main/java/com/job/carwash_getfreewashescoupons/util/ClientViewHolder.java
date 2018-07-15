@@ -205,4 +205,6 @@ public class ClientViewHolder extends RecyclerView.ViewHolder {
         intent.putExtra(CUSTOMERIDEXTRA, cusID);
         mContext.startActivity(intent);
     }
+
+
 }

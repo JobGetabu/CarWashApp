@@ -32,6 +32,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.job.carwash_getfreewashescoupons.R;
+import com.job.carwash_getfreewashescoupons.adapter.ClientAdapter;
 import com.job.carwash_getfreewashescoupons.datasource.CustomerInfo;
 import com.job.carwash_getfreewashescoupons.util.ClientViewHolder;
 import com.ramotion.foldingcell.FoldingCell;
@@ -62,7 +63,9 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore mFirestore;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private GoogleSignInClient mGoogleSignInClient;
+
     private FirestoreRecyclerAdapter adapter;
+    private ClientAdapter mAdapter;
 
 
     @Override
@@ -261,6 +264,51 @@ public class MainActivity extends AppCompatActivity {
         adapter.startListening();
         adapter.notifyDataSetChanged();
         mainClientlist.setAdapter(adapter);
+    }
+
+    private void initRecyclerView() {
+
+        String userId = mAuth.getCurrentUser().getUid();
+
+        // Create a reference to the clients collection
+        final CollectionReference clientRef = mFirestore.collection(CUSTOMERINFOCOL);
+        final Query query = clientRef
+                .whereEqualTo("ownerid", userId)
+                .orderBy("regdate", Query.Direction.DESCENDING);
+
+        if (query == null) {
+            Log.w(TAG, "No query, not initializing RecyclerView");
+        }
+
+        mAdapter = new ClientAdapter(query,this,mFirestore) {
+
+
+            @Override
+            public void onDataChanged() {
+                super.onDataChanged();
+
+                // Show/hide content if the query returns empty.
+                if (getItemCount() == 0) {
+                    mainClientlist.setVisibility(View.GONE);
+                    viewEmpty.setVisibility(View.VISIBLE);
+                } else {
+                    mainClientlist.setVisibility(View.VISIBLE);
+                    viewEmpty.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onError(FirebaseFirestoreException e) {
+                // Show a snackbar on errors
+                Snackbar.make(findViewById(android.R.id.content),
+                        "Error: check logs for info.", Snackbar.LENGTH_LONG).show();
+
+                Log.d(TAG, "onError: ", e);
+            }
+        };
+
+        mAdapter.notifyDataSetChanged();
+        mainClientlist.setAdapter(mAdapter);
     }
 
     private void initList() {
