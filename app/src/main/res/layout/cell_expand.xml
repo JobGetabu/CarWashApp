@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:visibility="visible"
-    >
+    android:visibility="gone">
 
     <!-- content body layout -->
     <LinearLayout
@@ -128,10 +127,10 @@
                     android:layout_alignLeft="@id/content_from_badge"
                     android:layout_alignStart="@id/content_from_badge"
                     android:layout_below="@id/content_from_badge"
-                    android:text="SAT 26"
                     android:textColor="@color/mainTextColor"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="SAT 26" />
 
                 <TextView
                     android:id="@+id/cell_year"
@@ -140,9 +139,9 @@
                     android:layout_alignLeft="@id/cell_date"
                     android:layout_alignStart="@id/cell_date"
                     android:layout_below="@id/cell_date"
-                    android:text="2018"
                     android:textColor="@color/mainTextColor"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    tools:text="2018" />
 
             </RelativeLayout>
 
@@ -167,7 +166,7 @@
                     android:layout_alignLeft="@id/content_to_badge"
                     android:layout_alignStart="@id/content_to_badge"
                     android:layout_below="@id/content_to_badge"
-                    android:text="5"
+                    tools:text="5"
                     android:textColor="@color/mainTextColor"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -227,10 +226,10 @@
                     android:layout_alignLeft="@id/content_from_badge1"
                     android:layout_alignStart="@id/content_from_badge1"
                     android:layout_below="@id/content_from_badge1"
-                    android:text="Motobike"
                     android:textColor="@color/mainTextColor"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="Motobike" />
 
             </RelativeLayout>
 
@@ -255,10 +254,10 @@
                     android:layout_alignLeft="@id/content_to_badge1"
                     android:layout_alignStart="@id/content_to_badge1"
                     android:layout_below="@id/content_to_badge1"
-                    android:text="KES 250"
                     android:textColor="@color/mainTextColor"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="KES 250" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -305,10 +304,10 @@
                     android:layout_alignLeft="@id/content_from_badge11"
                     android:layout_alignStart="@id/content_from_badge11"
                     android:layout_below="@id/content_from_badge11"
-                    android:text="KAR 102A"
                     android:textColor="@color/mainTextColor"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="KAR 102A" />
 
             </RelativeLayout>
 
@@ -333,10 +332,10 @@
                     android:layout_alignLeft="@id/content_to_badge11"
                     android:layout_alignStart="@id/content_to_badge11"
                     android:layout_below="@id/content_to_badge11"
-                    android:text="2"
                     android:textColor="@color/mainTextColor"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="2" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -373,9 +372,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="1 wash entry left to get free wash"
             android:textAlignment="center"
             android:textColor="@color/contentBadgeTitle"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            tools:text="1 wash entry left to get free wash" />
     </LinearLayout>
 </LinearLayout>

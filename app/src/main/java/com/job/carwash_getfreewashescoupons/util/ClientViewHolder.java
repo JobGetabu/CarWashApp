@@ -114,6 +114,8 @@ public class ClientViewHolder extends RecyclerView.ViewHolder {
 
                                         CustomerExtra customerExtra = dbtask.getResult().toObject(CustomerExtra.class);
 
+                                        cellVisits.setText(customerExtra.getVisits());
+                                        cellCoupon.setText(customerExtra.getCoupons());
 
                                     }
                                 });
