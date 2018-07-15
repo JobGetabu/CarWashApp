@@ -136,8 +136,8 @@ public class ClientViewHolder extends RecyclerView.ViewHolder {
 
                                             if (customerExtra != null) {
 
-                                                cellVisits.setText(customerExtra.getVisits());
-                                                cellCoupon.setText(customerExtra.getCoupons());
+                                                cellVisits.setText(String.valueOf(customerExtra.getVisits()));
+                                                cellCoupon.setText(String.valueOf(customerExtra.getCoupons()));
                                                 cellRatingNums.setText("(" + customerExtra.getVisits() + ")");
                                                 itemColRating.setRating(rating.setRating(customerExtra.getVisits()));
                                                 cellRatingStars.setRating(rating.setRating(customerExtra.getVisits()));

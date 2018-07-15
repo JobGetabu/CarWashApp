@@ -14,7 +14,7 @@ public class Rating {
     public Rating() {
     }
 
-    public float setRating(int myvisits){
+    public float setRating(double myvisits){
         if (isBetween(myvisits, 1, 2)) {
             return 0.2F * 5;
         } else if (isBetween(visits, 2, 4)) {
@@ -100,7 +100,7 @@ public class Rating {
     public void setVisits(int visits) {
         this.visits = visits;
     }
-    private boolean isBetween(int x, int lower, int upper) {
+    private boolean isBetween(double x, double lower, double upper) {
         return lower <= x && x <= upper;
     }
 }

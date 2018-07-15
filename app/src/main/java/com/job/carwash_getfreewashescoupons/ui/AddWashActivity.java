@@ -11,12 +11,21 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Transaction;
 import com.job.carwash_getfreewashescoupons.R;
 import com.job.carwash_getfreewashescoupons.datasource.CustomerInfo;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,9 +46,11 @@ public class AddWashActivity extends AppCompatActivity {
     TextView washAddBtn;
 
     private static final String TAG = "AddWash";
-    public static final String CUSTOMERINFOEXTRA = "CUSTOMERINFOEXTRA";
+
     public static final String CUSTOMERIDEXTRA = "CUSTOMERIDEXTRA";
     private static final String CUSTOMERINFOCOL = "CustomerInfo";
+    private static final String CUSTOMEREXTRACOL = "CustomerExtra";
+    private static final String WASHCOL = "Wash";
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
@@ -85,6 +96,33 @@ public class AddWashActivity extends AppCompatActivity {
         pDialog.setTitleText("Saving Entry...");
         pDialog.setCancelable(false);
         pDialog.show();
+
+        Map<String,Object> washMap = new HashMap<>();
+        washMap.put("customerid",clientId);
+        washMap.put("timestamp", FieldValue.serverTimestamp());
+        washMap.put("paid",true);
+
+        mFirestore.collection(WASHCOL).document()
+                .set(washMap)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            pDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                            pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+                                    finish();
+                                }
+                            });
+                        }else {
+                            pDialog.dismiss();
+                            Log.d(TAG, "onComplete: error" + task.getException().toString());
+                            errorPrompt();
+                        }
+                    }
+                });
     }
 
     public boolean validate() {
@@ -162,5 +200,35 @@ public class AddWashActivity extends AppCompatActivity {
 
             default: return 0;
         }
+    }
+
+    //run an update transaction and send sms here
+    private void updateWashesCount(){
+        final DocumentReference cusRef = mFirestore.collection(CUSTOMEREXTRACOL).document(clientId);
+
+        mFirestore.runTransaction(new Transaction.Function<Void>() {
+            @Override
+            public Void apply(Transaction transaction) throws FirebaseFirestoreException {
+                DocumentSnapshot snapshot = transaction.get(cusRef);
+
+                //int newVisit = snapshot.get("population") + 1;
+                //transaction.update(sfDocRef, "population", newPopulation);
+
+                // Success
+                return null;
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "Transaction success!");
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Transaction failure.", e);
+                    }
+                });
+
     }
 }

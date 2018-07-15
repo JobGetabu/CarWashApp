@@ -7,8 +7,8 @@ public class CustomerExtra {
     private String customerId;
     private String ownerid;
     private String name;
-    private int visits;
-    private int coupons;
+    private double visits;
+    private double coupons;
     private double rating;
 
     public CustomerExtra() {
@@ -39,15 +39,15 @@ public class CustomerExtra {
         this.name = name;
     }
 
-    public int getVisits() {
-        return visits;
+    public double getVisits() {
+       return visits;
     }
 
     public void setVisits(int visits) {
         this.visits = visits;
     }
 
-    public int getCoupons() {
+    public double getCoupons() {
         return coupons;
     }
 

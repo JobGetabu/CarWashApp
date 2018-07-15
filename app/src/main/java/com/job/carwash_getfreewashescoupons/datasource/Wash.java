@@ -8,12 +8,12 @@ import com.google.firebase.Timestamp;
  */
 public class Wash {
     private Timestamp timestamp;
-    private String customerId;
+    private String customerid;
     private Boolean paid;
 
-    public Wash(Timestamp timestamp, String customerId, Boolean paid) {
+    public Wash(Timestamp timestamp, String customerid, Boolean paid) {
         this.timestamp = timestamp;
-        this.customerId = customerId;
+        this.customerid = customerid;
         this.paid = paid;
     }
 
@@ -25,12 +25,12 @@ public class Wash {
         this.timestamp = timestamp;
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public String getCustomerid() {
+        return customerid;
     }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
+    public void setCustomerid(String customerid) {
+        this.customerid = customerid;
     }
 
     public Boolean getPaid() {
@@ -45,7 +45,7 @@ public class Wash {
     public String toString() {
         return "Wash{" +
                 "timestamp=" + timestamp +
-                ", customerId='" + customerId + '\'' +
+                ", customerid='" + customerid + '\'' +
                 ", paid='" + paid + '\'' +
                 '}';
     }
