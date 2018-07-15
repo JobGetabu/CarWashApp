@@ -4,11 +4,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -16,7 +26,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.job.carwash_getfreewashescoupons.R;
+import com.job.carwash_getfreewashescoupons.datasource.CustomerInfo;
+import com.job.carwash_getfreewashescoupons.util.ClientViewHolder;
+import com.ramotion.foldingcell.FoldingCell;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,11 +45,21 @@ public class MainActivity extends AppCompatActivity {
     Toolbar mToolbar;
     @BindView(R.id.fab_button)
     FloatingActionButton fabButton;
+    @BindView(R.id.main_clientlist)
+    RecyclerView mainClientlist;
+    @BindView(R.id.view_empty)
+    LinearLayout viewEmpty;
+
+
+    private static final String CUSTOMERINFOCOL = "CustomerInfo";
+    private static final String TAG = "MainPage";
 
     private FilterDialogFragment mFilterDialog;
     private FirebaseAuth mAuth;
+    private FirebaseFirestore mFirestore;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private GoogleSignInClient mGoogleSignInClient;
+    private FirestoreRecyclerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         //firebase
         mAuth = FirebaseAuth.getInstance();
+        mFirestore = FirebaseFirestore.getInstance();
         authListner();
 
         //login credentials
@@ -57,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
         // Filter Dialog
         mFilterDialog = new FilterDialogFragment();
 
+        setUpList();
     }
 
     @Override
@@ -98,6 +127,17 @@ public class MainActivity extends AppCompatActivity {
         if (currentUser == null) {
             sendToLogin();
         }
+
+        if (adapter != null)
+            adapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (adapter != null)
+            adapter.stopListening();
     }
 
     private void sendToLogin() {
@@ -129,5 +169,77 @@ public class MainActivity extends AppCompatActivity {
                         sendToLogin();
                     }
                 });
+    }
+
+    private void setUpList() {
+        LinearLayoutManager linearLayoutManager = new
+                LinearLayoutManager(this.getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+
+        mainClientlist.setLayoutManager(linearLayoutManager);
+        mainClientlist.setHasFixedSize(true);
+
+        // Create a reference to the clients collection
+        final CollectionReference clientRef = mFirestore.collection(CUSTOMERINFOCOL);
+        final Query query = clientRef
+                .whereEqualTo("ownerid", mAuth.getCurrentUser().getUid())
+                .orderBy("regdate", Query.Direction.DESCENDING);
+
+        FirestoreRecyclerOptions<CustomerInfo> options = new FirestoreRecyclerOptions.Builder<CustomerInfo>()
+                .setQuery(query, CustomerInfo.class)
+                .build();
+
+        adapter = new FirestoreRecyclerAdapter<CustomerInfo, ClientViewHolder>(options) {
+            @NonNull
+            @Override
+            public ClientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+                LayoutInflater vi = LayoutInflater.from(MainActivity.this);
+                final FoldingCell cell = (FoldingCell) vi.inflate(R.layout.cell, parent, false);
+
+                // attach click listener to folding cell
+                cell.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cell.toggle(false);
+                    }
+                });
+
+                return new ClientViewHolder(cell);
+            }
+
+            @Override
+            protected void onBindViewHolder(@NonNull ClientViewHolder holder, int position, @NonNull CustomerInfo model) {
+
+                holder.init(MainActivity.this, mFirestore);
+                holder.setUpUiSmall(model);
+                holder.setUpUiExpanded(model.getCustomerId());
+            }
+
+            @Override
+            public void onDataChanged() {
+                super.onDataChanged();
+
+                // Show/hide content if the query returns empty.
+                if (getItemCount() == 0) {
+                    mainClientlist.setVisibility(View.GONE);
+                    viewEmpty.setVisibility(View.VISIBLE);
+                } else {
+                    mainClientlist.setVisibility(View.VISIBLE);
+                    viewEmpty.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onError(FirebaseFirestoreException e) {
+                // Show a snackbar on errors
+                Snackbar.make(findViewById(android.R.id.content),
+                        "Error: check logs for info.", Snackbar.LENGTH_LONG).show();
+                Log.e(TAG, "onError: ",e);
+            }
+        };
+
+        adapter.startListening();
+        adapter.notifyDataSetChanged();
+        mainClientlist.setAdapter(adapter);
     }
 }

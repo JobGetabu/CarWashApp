@@ -58,4 +58,8 @@ public class ClientViewHolder extends RecyclerView.ViewHolder {
         itemColPrice.setText(rating.getPrice(customerInfo.getVehicletype()));
 
     }
+
+    public void setUpUiExpanded(String customerId){
+
+    }
 }
