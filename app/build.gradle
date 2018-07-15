@@ -39,13 +39,13 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
 
     // Firebase
-    implementation 'com.google.firebase:firebase-firestore:16.0.0'
+    implementation 'com.google.firebase:firebase-firestore:17.0.2'
     implementation 'com.google.firebase:firebase-auth:16.0.2'
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
     implementation 'com.google.firebase:firebase-messaging:17.1.0'
 
     // FirebaseUI for Cloud Firestore
-    implementation 'com.firebaseui:firebase-ui-firestore:4.0.1'
+    implementation 'com.firebaseui:firebase-ui-firestore:4.1.0'
 
     // ButterKnife (for code brevity)
     implementation 'com.jakewharton:butterknife:8.8.1'

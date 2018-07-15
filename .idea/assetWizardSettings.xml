@@ -28,9 +28,10 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="747474" />
-                            <entry key="outputName" value="ic_date_range" />
-                            <entry key="sourceFile" value="C:\Users\getab\Desktop\Projects\Assets\cc\Traffic Jam.svg" />
+                            <entry key="outputName" value="ic_motorcycle" />
+                            <entry key="sourceFile" value="C:\Users\getab\Desktop\Projects\Assets\cc\Motorcycle.svg" />
                           </map>
                         </option>
                       </PersistentState>

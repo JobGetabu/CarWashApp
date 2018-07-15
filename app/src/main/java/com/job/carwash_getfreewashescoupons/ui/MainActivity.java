@@ -73,6 +73,9 @@ public class MainActivity extends AppCompatActivity {
         mFirestore = FirebaseFirestore.getInstance();
         authListner();
 
+        initList();
+        setUpList();
+
         //login credentials
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -85,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
         // Filter Dialog
         mFilterDialog = new FilterDialogFragment();
 
-        setUpList();
     }
 
     @Override
@@ -121,23 +123,34 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
 
+        // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
             sendToLogin();
         }
 
-        if (adapter != null)
+        if (adapter != null) {
             adapter.startListening();
+            adapter.notifyDataSetChanged();
+        }
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
-        if (adapter != null)
+        if (adapter != null) {
             adapter.stopListening();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        adapter.notifyDataSetChanged();
     }
 
     private void sendToLogin() {
@@ -172,11 +185,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUpList() {
-        LinearLayoutManager linearLayoutManager = new
-                LinearLayoutManager(this.getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-
-        mainClientlist.setLayoutManager(linearLayoutManager);
-        mainClientlist.setHasFixedSize(true);
 
         // Create a reference to the clients collection
         final CollectionReference clientRef = mFirestore.collection(CUSTOMERINFOCOL);
@@ -213,6 +221,8 @@ public class MainActivity extends AppCompatActivity {
                 holder.init(MainActivity.this, mFirestore);
                 holder.setUpUiSmall(model);
                 holder.setUpUiExpanded(model.getCustomerId());
+
+                Log.d(TAG, "onBindViewHolder: " + model.toString());
             }
 
             @Override
@@ -234,12 +244,19 @@ public class MainActivity extends AppCompatActivity {
                 // Show a snackbar on errors
                 Snackbar.make(findViewById(android.R.id.content),
                         "Error: check logs for info.", Snackbar.LENGTH_LONG).show();
-                Log.e(TAG, "onError: ",e);
+                Log.e(TAG, "onError: ", e);
             }
         };
 
-        adapter.startListening();
         adapter.notifyDataSetChanged();
         mainClientlist.setAdapter(adapter);
+    }
+
+    private void initList() {
+        LinearLayoutManager linearLayoutManager = new
+                LinearLayoutManager(this.getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+
+        mainClientlist.setLayoutManager(linearLayoutManager);
+        mainClientlist.setHasFixedSize(true);
     }
 }
