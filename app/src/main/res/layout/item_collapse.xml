@@ -12,8 +12,9 @@
         android:id="@+id/item_col_image"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:background="#757575"
         android:scaleType="centerCrop"
+        android:background="#757575"
+        android:tint="#232323"
         app:srcCompat="@drawable/ic_car" />
 
     <TextView

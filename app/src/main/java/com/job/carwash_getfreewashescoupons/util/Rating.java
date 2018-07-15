@@ -11,6 +11,9 @@ public class Rating {
         this.visits = visits;
     }
 
+    public Rating() {
+    }
+
     public double getRating(){
         if (isBetween(visits, 1, 2)) {
             return 0.2;
@@ -28,6 +31,26 @@ public class Rating {
             return 1.0;
         }
         return 0;
+    }
+
+    public String getPrice(String vehicletype){
+        switch (vehicletype){
+            case "Car": return "$$";
+
+            case "Canter": return "$$$";
+
+            case "Motorbike": return "$";
+
+            case "Nissan": return "$$";
+
+            case "Pickup": return "$$";
+
+            case "Tipper": return "$$$";
+
+            case "Trailer": return "$$$";
+
+            default: return "";
+        }
     }
 
     public int getVisits() {

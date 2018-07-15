@@ -1,6 +1,7 @@
 package com.job.carwash_getfreewashescoupons.util;
 
 import android.content.Context;
+import android.widget.ImageView;
 
 /**
  * Created by Job on Thursday : 5/3/2018.
@@ -14,33 +15,32 @@ public class ImageProcessor {
     }
 
     //set images to ImageView
-    /*
-    public void setMyImage(final ImageView imageView, final String url) {
-        if (url.isEmpty()){
-            imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.avatar_placeholder));
-        }else {
-            Picasso
-                    .get()
-                    .load(url)
-                    .placeholder(R.drawable.avatar_placeholder)
-                    .error(R.drawable.avatar_placeholder)
-                    .into(imageView, new Callback() {
-                        @Override
-                        public void onSuccess() {
 
-                        }
+    public void setMyImage(ImageView imageView, final String vehicletype) {
+        switch (vehicletype) {
+            case "Car":
+                break;
 
-                        @Override
-                        public void onError(Exception e) {
-                            //no cache download new image
-                            Picasso
-                                    .get()
-                                    .load(url)
-                                    .placeholder(R.drawable.avatar_placeholder)
-                                    .error(R.drawable.avatar_placeholder)
-                                    .into(imageView);
-                        }
-                    });
+            case "Canter":
+                break;
+
+            case "Motorbike":
+                break;
+
+            case "Nissan":
+                break;
+
+            case "Pickup":
+                break;
+
+            case "Tipper":
+                break;
+
+            case "Trailer":
+                break;
+
+            default:
+                break;
         }
-    */
+    }
 }
