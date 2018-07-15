@@ -24,6 +24,7 @@ public class CarWashApp extends MultiDexApplication {
 
         if (mAuth != null){
             FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                    .setPersistenceEnabled(true)
                     .setTimestampsInSnapshotsEnabled(true)
                     .build();
             mFirestore.setFirestoreSettings(settings);

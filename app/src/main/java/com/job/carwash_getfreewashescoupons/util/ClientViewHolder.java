@@ -3,7 +3,6 @@ package com.job.carwash_getfreewashescoupons.util;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -74,7 +73,7 @@ public class ClientViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
 
         ButterKnife.bind(this, itemView);
-        LayoutInflater.from(mContext).inflate(R.layout.cell_expand, null);
+        //LayoutInflater.from(mContext).inflate(R.layout.cell_expand, null);
         //LayoutInflater.from(mContext).inflate(R.layout.item_collapse, null);
     }
 
@@ -106,19 +105,25 @@ public class ClientViewHolder extends RecyclerView.ViewHolder {
                     @Override
                     public void onComplete(@NonNull final Task<DocumentSnapshot> dbtask) {
 
-                        DefaultExecutorSupplier.getInstance().forMainThreadTasks()
-                                .execute(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        // do some Main Thread work here.
+                        if (dbtask.isSuccessful()) {
 
-                                        CustomerExtra customerExtra = dbtask.getResult().toObject(CustomerExtra.class);
+                            DefaultExecutorSupplier.getInstance().forMainThreadTasks()
+                                    .execute(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            // do some Main Thread work here.
 
-                                        cellVisits.setText(customerExtra.getVisits());
-                                        cellCoupon.setText(customerExtra.getCoupons());
+                                            CustomerExtra customerExtra = dbtask.getResult().toObject(CustomerExtra.class);
 
-                                    }
-                                });
+                                            if (customerExtra != null) {
+
+                                                cellVisits.setText(customerExtra.getVisits());
+                                                cellCoupon.setText(customerExtra.getCoupons());
+                                            }
+
+                                        }
+                                    });
+                        }
                     }
                 });
     }

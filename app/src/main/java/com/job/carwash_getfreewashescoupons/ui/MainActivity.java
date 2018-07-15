@@ -1,5 +1,6 @@
 package com.job.carwash_getfreewashescoupons.ui;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,10 +11,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
@@ -39,6 +40,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar)
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private GoogleSignInClient mGoogleSignInClient;
     private FirestoreRecyclerAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (adapter != null) {
             adapter.startListening();
-            adapter.notifyDataSetChanged();
         }
 
     }
@@ -149,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         adapter.notifyDataSetChanged();
     }
 
@@ -186,10 +187,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpList() {
 
+        String userId = mAuth.getCurrentUser().getUid();
+
         // Create a reference to the clients collection
         final CollectionReference clientRef = mFirestore.collection(CUSTOMERINFOCOL);
         final Query query = clientRef
-                .whereEqualTo("ownerid", mAuth.getCurrentUser().getUid())
+                .whereEqualTo("ownerid", userId)
                 .orderBy("regdate", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<CustomerInfo> options = new FirestoreRecyclerOptions.Builder<CustomerInfo>()
@@ -216,13 +219,14 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull ClientViewHolder holder, int position, @NonNull CustomerInfo model) {
+            public void onBindViewHolder(@NonNull ClientViewHolder holder, int position, @NonNull CustomerInfo model) {
 
                 holder.init(MainActivity.this, mFirestore);
                 holder.setUpUiSmall(model);
                 holder.setUpUiExpanded(model.getCustomerId());
 
                 Log.d(TAG, "onBindViewHolder: " + model.toString());
+
             }
 
             @Override
@@ -244,10 +248,12 @@ public class MainActivity extends AppCompatActivity {
                 // Show a snackbar on errors
                 Snackbar.make(findViewById(android.R.id.content),
                         "Error: check logs for info.", Snackbar.LENGTH_LONG).show();
-                Log.e(TAG, "onError: ", e);
+
+                Log.d(TAG, "onError: ", e);
             }
         };
 
+        adapter.startListening();
         adapter.notifyDataSetChanged();
         mainClientlist.setAdapter(adapter);
     }
@@ -255,7 +261,6 @@ public class MainActivity extends AppCompatActivity {
     private void initList() {
         LinearLayoutManager linearLayoutManager = new
                 LinearLayoutManager(this.getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-
         mainClientlist.setLayoutManager(linearLayoutManager);
         mainClientlist.setHasFixedSize(true);
     }
