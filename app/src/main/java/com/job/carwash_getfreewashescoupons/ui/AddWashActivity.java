@@ -1,11 +1,14 @@
 package com.job.carwash_getfreewashescoupons.ui;
 
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -23,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Transaction;
 import com.job.carwash_getfreewashescoupons.R;
 import com.job.carwash_getfreewashescoupons.datasource.CustomerInfo;
+import com.job.carwash_getfreewashescoupons.util.CouponLogic;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,8 +52,12 @@ public class AddWashActivity extends AppCompatActivity {
     private static final String TAG = "AddWash";
 
     public static final String CUSTOMERIDEXTRA = "CUSTOMERIDEXTRA";
+    public static final String CUSTOMERNAMEEXTRA = "CUSTOMERNAMEEXTRA";
+    public static final String CUSTOMERPHONEEXTRA = "CUSTOMERPHONEEXTRA";
+
     private static final String CUSTOMERINFOCOL = "CustomerInfo";
     private static final String CUSTOMEREXTRACOL = "CustomerExtra";
+
     private static final String WASHCOL = "Wash";
 
     private FirebaseAuth mAuth;
@@ -214,6 +222,13 @@ public class AddWashActivity extends AppCompatActivity {
                 double newVisit = snapshot.getDouble("visits") + 1;
                 transaction.update(cusRef, "visits", newVisit);
 
+                int s = new Double(newVisit).intValue();
+
+                if ( CouponLogic.IsCouponReady(s)){
+                    //send message
+
+                }
+
                 // Success
                 return null;
             }
@@ -229,6 +244,14 @@ public class AddWashActivity extends AppCompatActivity {
                         Log.w(TAG, "Transaction failure.", e);
                     }
                 });
+    }
 
+    //---sends an SMS message to another device---
+    private void sendSMS(String phoneNumber, String message)
+    {
+        PendingIntent pi = PendingIntent.getActivity(this, 0,
+                new Intent(this, AddWashActivity.class), 0);
+        SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage(phoneNumber, null, message, pi, null);
     }
 }

@@ -34,6 +34,8 @@ import butterknife.OnClick;
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
 import static com.job.carwash_getfreewashescoupons.ui.AddWashActivity.CUSTOMERIDEXTRA;
+import static com.job.carwash_getfreewashescoupons.ui.AddWashActivity.CUSTOMERNAMEEXTRA;
+import static com.job.carwash_getfreewashescoupons.ui.AddWashActivity.CUSTOMERPHONEEXTRA;
 
 /**
  * Created by Job on Sunday : 7/15/2018.
@@ -85,7 +87,10 @@ public class ClientViewHolder extends RecyclerView.ViewHolder {
 
     private String CUSTOMEREXTRACOL = "CustomerExtra";
     private String WASHCOL = "Wash";
+
     private String cusID = "";
+    private String cusPhone = "";
+    private String cusName = "";
 
     public ClientViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -113,6 +118,8 @@ public class ClientViewHolder extends RecyclerView.ViewHolder {
         itemColPrice.setText(rating.getPrice(customerInfo.getVehicletype()));
 
         cusID = customerInfo.getCustomerId();
+        cusPhone = customerInfo.getPhonenumber();
+        cusName = customerInfo.getFirstname() +" "+customerInfo.getLastname();
     }
 
 
@@ -203,6 +210,8 @@ public class ClientViewHolder extends RecyclerView.ViewHolder {
 
         Intent intent = new Intent(mContext, AddWashActivity.class);
         intent.putExtra(CUSTOMERIDEXTRA, cusID);
+        intent.putExtra(CUSTOMERNAMEEXTRA, cusName);
+        intent.putExtra(CUSTOMERPHONEEXTRA, cusPhone);
         mContext.startActivity(intent);
     }
 
