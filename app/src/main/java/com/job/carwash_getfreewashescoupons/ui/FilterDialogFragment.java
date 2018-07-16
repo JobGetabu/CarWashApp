@@ -16,6 +16,7 @@
  package com.job.carwash_getfreewashescoupons.ui;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -24,7 +25,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Spinner;
 
+import com.google.firebase.firestore.Query;
 import com.job.carwash_getfreewashescoupons.R;
+import com.job.carwash_getfreewashescoupons.util.Filter;
 import com.job.carwash_getfreewashescoupons.viewmodel.FilterViewModel;
 
 import butterknife.BindView;
@@ -35,6 +38,12 @@ import butterknife.OnClick;
  * Dialog Fragment containing filter form.
  */
 public class FilterDialogFragment extends DialogFragment {
+
+    interface FilterListener {
+
+        void onFilter(Filter filters);
+
+    }
 
     public static final String TAG = "FilterDialog";
 
@@ -51,6 +60,8 @@ public class FilterDialogFragment extends DialogFragment {
 
     private FilterViewModel mViewModel;
 
+    private FilterListener mFilterListener;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -61,6 +72,8 @@ public class FilterDialogFragment extends DialogFragment {
 
         return mRootView;
     }
+
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -78,6 +91,15 @@ public class FilterDialogFragment extends DialogFragment {
                 ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof FilterListener) {
+            mFilterListener = (FilterListener) context;
+        }
+    }
+
     @OnClick(R.id.button_search)
     public void onSearchClicked() {
 
@@ -85,6 +107,10 @@ public class FilterDialogFragment extends DialogFragment {
         mViewModel.setDateMediatorLiveData(mDateSpinner.getSelectedItem().toString());
         mViewModel.setPriceMediatorLiveData(mPriceSpinner.getSelectedItem().toString());
         mViewModel.setVehicleMediatorLiveData(mVehicleSpinner.getSelectedItem().toString());
+
+        if (mFilterListener != null) {
+            mFilterListener.onFilter(getFilters());
+        }
         //do set up here
         dismiss();
     }
@@ -94,5 +120,56 @@ public class FilterDialogFragment extends DialogFragment {
         dismiss();
     }
 
+    @Nullable
+    private String getSelectedVehicle() {
+        String selected = (String) mVehicleSpinner.getSelectedItem();
+        if (getString(R.string.allvehicles).equals(selected)) {
+            return null;
+        } else {
+            return selected;
+        }
+    }
+
+    @Nullable
+    private String getSelectedPrice() {
+        String selected = (String) mPriceSpinner.getSelectedItem();
+        if (getString(R.string.allprices).equals(selected)) {
+            return null;
+        } else {
+            return selected;
+        }
+    }
+
+    @Nullable
+    private Query.Direction getDateDirection() {
+        String selected = (String) mDateSpinner.getSelectedItem();
+        if (getString(R.string.fromrecent).equals(selected)) {
+            return Query.Direction.DESCENDING;
+        } if (getString(R.string.frompast).equals(selected)) {
+            return Query.Direction.ASCENDING;
+        }
+
+        return null;
+    }
+
+    public void resetFilters() {
+        if (mRootView != null) {
+            mDateSpinner.setSelection(0);
+            mPriceSpinner.setSelection(0);
+            mVehicleSpinner.setSelection(0);
+        }
+    }
+
+    public Filter getFilters() {
+        Filter filters = new Filter();
+
+        if (mRootView != null) {
+            filters.setPrice(getSelectedPrice());
+            filters.setDateDirection(getDateDirection());
+            filters.setPrice(getSelectedPrice());
+        }
+
+        return filters;
+    }
 
 }

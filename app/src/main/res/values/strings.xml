@@ -18,6 +18,10 @@
     <!--filter keywords-->
     <string name="allvehicles">ALL Vehicles</string>
     <string name="allprices">ALL Prices</string>
+    <string name="frompast">From Past</string>
+    <string name="fromrecent">From Recent</string>
+
+
     <!-- Price filters -->
     <string-array name="vehicletypes">
         <item>Car</item>
