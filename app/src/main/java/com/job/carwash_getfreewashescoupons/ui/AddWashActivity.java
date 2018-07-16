@@ -281,7 +281,7 @@ public class AddWashActivity extends AppCompatActivity {
     //---sends an SMS message to another device---
     private void sendSMS(String phoneNumber, String message) {
         PendingIntent pi = PendingIntent.getActivity(this, 0,
-                new Intent(this, AddWashActivity.class), 0);
+                new Intent(this, MainActivity.class), 0);
         SmsManager sms = SmsManager.getDefault();
         sms.sendTextMessage(phoneNumber, null, message, pi, null);
     }
