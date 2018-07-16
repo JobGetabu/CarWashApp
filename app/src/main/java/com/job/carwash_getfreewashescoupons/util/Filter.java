@@ -9,7 +9,6 @@ import com.google.firebase.firestore.Query;
  */
 public class Filter {
     private String vehicle = null;
-    private String price = null;
     private Query.Direction dateDirection = null;
 
     public Filter() {
@@ -18,7 +17,6 @@ public class Filter {
     public static Filter getDefault() {
         Filter filters = new Filter();
         filters.setVehicle("ALL Vehicles");
-        filters.setPrice("ALL Prices");
         filters.setDateDirection(Query.Direction.DESCENDING);
 
         return filters;
@@ -28,17 +26,11 @@ public class Filter {
         return !(TextUtils.isEmpty(vehicle));
     }
 
-    public boolean hasPrice() {
-        return !(TextUtils.isEmpty(price));
-    }
 
     public String getVehicle() {
         return vehicle;
     }
 
-    public String getPrice() {
-        return price;
-    }
 
     public Query.Direction getDateDirection() {
         return dateDirection;
@@ -50,9 +42,5 @@ public class Filter {
 
     public void setVehicle(String vehicle) {
         this.vehicle = vehicle;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
     }
 }
