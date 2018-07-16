@@ -1,9 +1,13 @@
 package com.job.carwash_getfreewashescoupons.ui;
 
 
+import android.arch.lifecycle.MediatorLiveData;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +20,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -35,6 +41,7 @@ import com.job.carwash_getfreewashescoupons.R;
 import com.job.carwash_getfreewashescoupons.datasource.CustomerInfo;
 import com.job.carwash_getfreewashescoupons.util.ClientViewHolder;
 import com.job.carwash_getfreewashescoupons.util.Filter;
+import com.job.carwash_getfreewashescoupons.viewmodel.FilterViewModel;
 import com.ramotion.foldingcell.FoldingCell;
 
 import butterknife.BindView;
@@ -42,7 +49,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class MainActivity extends AppCompatActivity implements FilterDialogFragment.FilterListener{
+public class MainActivity extends AppCompatActivity implements FilterDialogFragment.FilterListener {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -52,6 +59,12 @@ public class MainActivity extends AppCompatActivity implements FilterDialogFragm
     RecyclerView mainClientlist;
     @BindView(R.id.view_empty)
     LinearLayout viewEmpty;
+    @BindView(R.id.text_current_search)
+    TextView textCurrentSearch;
+    @BindView(R.id.text_current_sort_by)
+    TextView textCurrentSortBy;
+    @BindView(R.id.button_clear_filter)
+    ImageView buttonClearFilter;
 
 
     private static final String CUSTOMERINFOCOL = "CustomerInfo";
@@ -65,6 +78,9 @@ public class MainActivity extends AppCompatActivity implements FilterDialogFragm
     private GoogleSignInClient mGoogleSignInClient;
 
     private FirestoreRecyclerAdapter adapter;
+
+    private FilterViewModel mViewModel;
+    private Query mQuery;
 
 
     @Override
@@ -81,6 +97,14 @@ public class MainActivity extends AppCompatActivity implements FilterDialogFragm
         authListner();
 
         initList();
+
+        String userId = mAuth.getCurrentUser().getUid();
+        // Create a reference to the clients collection
+        final CollectionReference clientRef = mFirestore.collection(CUSTOMERINFOCOL);
+        mQuery = clientRef
+                .whereEqualTo("ownerid", userId)
+                .orderBy("regdate", Query.Direction.DESCENDING);
+
         setUpList();
 
         //login credentials
@@ -92,8 +116,13 @@ public class MainActivity extends AppCompatActivity implements FilterDialogFragm
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
+        // View model
+        mViewModel = ViewModelProviders.of(this).get(FilterViewModel.class);
+
         // Filter Dialog
         mFilterDialog = new FilterDialogFragment();
+
+        setUpUiObservers();
 
     }
 
@@ -184,16 +213,8 @@ public class MainActivity extends AppCompatActivity implements FilterDialogFragm
 
     private void setUpList() {
 
-        String userId = mAuth.getCurrentUser().getUid();
-
-        // Create a reference to the clients collection
-        final CollectionReference clientRef = mFirestore.collection(CUSTOMERINFOCOL);
-        final Query query = clientRef
-                .whereEqualTo("ownerid", userId)
-                .orderBy("regdate", Query.Direction.DESCENDING);
-
         FirestoreRecyclerOptions<CustomerInfo> options = new FirestoreRecyclerOptions.Builder<CustomerInfo>()
-                .setQuery(query, CustomerInfo.class)
+                .setQuery(mQuery, CustomerInfo.class)
                 .build();
 
         adapter = new FirestoreRecyclerAdapter<CustomerInfo, ClientViewHolder>(options) {
@@ -277,11 +298,48 @@ public class MainActivity extends AppCompatActivity implements FilterDialogFragm
         // Construct query basic query
         Query query = mFirestore.collection(CUSTOMERINFOCOL);
 
+        query.whereEqualTo("ownerid", mAuth.getCurrentUser().getUid());
+        
+
         // vehicle (equality filter)
         if (filters.hasVehicle()) {
             query = query.whereEqualTo("vehicletype", filters.getVehicle());
         }
 
-        query.orderBy("regdate",filters.getDateDirection());
+        query.orderBy("regdate", filters.getDateDirection());
+
+        // Update the query
+        mQuery = query;
+        setUpList();
+
+
+        //save the filter
+        mViewModel.setmFilters(filters);
+
+    }
+
+    private void setUpUiObservers() {
+        MediatorLiveData<String> data1 = mViewModel.getVehicleMediatorLiveData();
+
+        data1.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                if (s != null) {
+
+                    textCurrentSearch.setText(s);
+                }
+            }
+        });
+
+        MediatorLiveData<String> data = mViewModel.getDateMediatorLiveData();
+        data.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                if (s != null) {
+
+                    textCurrentSortBy.setText("sorted by "+s);
+                }
+            }
+        });
     }
 }

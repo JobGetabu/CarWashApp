@@ -43,4 +43,5 @@ public class Filter {
     public void setVehicle(String vehicle) {
         this.vehicle = vehicle;
     }
+
 }

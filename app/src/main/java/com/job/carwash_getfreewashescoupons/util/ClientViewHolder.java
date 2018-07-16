@@ -179,8 +179,13 @@ public class ClientViewHolder extends RecyclerView.ViewHolder {
 
                                             List<DocumentSnapshot> washdocs = task.getResult().getDocuments();
 
-                                            Log.d(TAG, "run: wash list 0 => " + washdocs.get(0));
-                                            dealTime(washdocs.get(0).getTimestamp("timestamp"));
+                                            if (washdocs.size() != 0){
+                                                Log.d(TAG, "run: wash list 0 => " + washdocs.get(0));
+                                                dealTime(washdocs.get(0).getTimestamp("timestamp"));
+                                            }else {
+                                                cellDate.setText("- -");
+                                                cellYear.setText(" - ");
+                                            }
                                         }
                                     });
                         } else {

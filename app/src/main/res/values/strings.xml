@@ -17,8 +17,8 @@
 
     <!--filter keywords-->
     <string name="allvehicles">ALL Vehicles</string>
-    <string name="frompast">From Past</string>
-    <string name="fromrecent">From Recent</string>
+    <string name="frompast">Date: From Past</string>
+    <string name="fromrecent">Date: From Recent</string>
 
 
     <!-- Price filters -->

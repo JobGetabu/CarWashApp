@@ -12,7 +12,6 @@ public class FilterViewModel extends ViewModel {
 
     private MediatorLiveData<String> dateMediatorLiveData = new MediatorLiveData<>();
     private MediatorLiveData<String> vehicleMediatorLiveData = new MediatorLiveData<>();
-    private MediatorLiveData<String> priceMediatorLiveData = new MediatorLiveData<>();
 
     private Filter mFilters;
 
@@ -34,14 +33,6 @@ public class FilterViewModel extends ViewModel {
 
     public void setVehicleMediatorLiveData(String vehicleMediatorLiveData) {
         this.vehicleMediatorLiveData.setValue(vehicleMediatorLiveData);
-    }
-
-    public MediatorLiveData<String> getPriceMediatorLiveData() {
-        return priceMediatorLiveData;
-    }
-
-    public void setPriceMediatorLiveData(String priceMediatorLiveData) {
-        this.priceMediatorLiveData.setValue(priceMediatorLiveData);
     }
 
     public Filter getmFilters() {

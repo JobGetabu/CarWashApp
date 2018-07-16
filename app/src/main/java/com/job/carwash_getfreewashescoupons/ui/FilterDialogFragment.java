@@ -132,7 +132,8 @@ public class FilterDialogFragment extends DialogFragment {
         String selected = (String) mDateSpinner.getSelectedItem();
         if (getString(R.string.fromrecent).equals(selected)) {
             return Query.Direction.DESCENDING;
-        } if (getString(R.string.frompast).equals(selected)) {
+        }
+        if (getString(R.string.frompast).equals(selected)) {
             return Query.Direction.ASCENDING;
         }
 
