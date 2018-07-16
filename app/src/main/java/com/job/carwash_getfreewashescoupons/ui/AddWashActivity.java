@@ -128,9 +128,6 @@ public class AddWashActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
 
-                            //testing notification
-                            mNotificationUtil.showStandardHeadsUpNotification(AddWashActivity.this);
-
                             updateWashesCount(pDialog);
 
 
@@ -246,9 +243,19 @@ public class AddWashActivity extends AppCompatActivity {
                 if (CouponLogic.IsAcouponWashVisit(s)){
                     double newCoupon = snapshot.getDouble("coupons") + 1;
                     transaction.update(cusRef, "coupons", newCoupon);
+
+                    //free wash notification
+                    //Free Car Wash \n  <username> has enjoyed the free service
+                    mNotificationUtil.showStandardHeadsUpNotification(AddWashActivity.this,
+                            "Free Car Wash",clientName+" has enjoyed the free service");
                 }
 
                 if (CouponLogic.IsCouponReady(s)) {
+                   //notification
+                    //SMS sent
+                    //We've notified <username> his next car wash is FREE
+                    mNotificationUtil.showStandardHeadsUpNotification(AddWashActivity.this,"SMS sent",
+                            "We've notified "+clientName+" his next car wash is FREE");
                     //send message
 
                     String message = "Hi " + clientName + " you're our valued customer \n enjoy your next car wash COMPLETELY FREE";

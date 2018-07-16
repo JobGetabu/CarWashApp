@@ -155,8 +155,7 @@ public class MainActivity extends AppCompatActivity implements FilterDialogFragm
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.main_search:
-                break;
+
             case R.id.main_logout:
                 signOutGoogle();
                 break;

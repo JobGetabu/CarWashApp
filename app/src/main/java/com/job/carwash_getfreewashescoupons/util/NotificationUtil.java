@@ -26,7 +26,7 @@ public class NotificationUtil {
     public static final String REPLY_ACTION = "com.hitherejoe.notifi.util.ACTION_MESSAGE_REPLY";
 
 
-    public void showStandardHeadsUpNotification(Context context) {
+    public void showStandardHeadsUpNotification(Context context,String title, String message) {
 
         PendingIntent archiveIntent = PendingIntent.getActivity(context,
                 ARCHIVE_INTENT_ID,
@@ -42,10 +42,10 @@ public class NotificationUtil {
                         .build();
 
         NotificationCompat.Builder notificationBuider = createNotificationBuider(
-                context, "Heads up!", "This is a normal heads up notification");
+                context, title, message);
         notificationBuider.setPriority(Notification.PRIORITY_HIGH).setVibrate(new long[0]);
-        notificationBuider.addAction(replyAction);
-        notificationBuider.addAction(archiveAction);
+        /*notificationBuider.addAction(replyAction);
+        notificationBuider.addAction(archiveAction);*/
 
         Intent push = new Intent();
         push.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -60,7 +60,7 @@ public class NotificationUtil {
     public NotificationCompat.Builder createNotificationBuider(Context context,
                                                                String title, String message) {
         Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(),
-                R.drawable.ic_launcher);
+                R.mipmap.ic_launcher);
         return new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_vehicles)
                 .setContentTitle(title)
