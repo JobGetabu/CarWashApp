@@ -32,10 +32,6 @@ public class CouponLogic {
         //sequence rule 7n or 6
         // n = visits
 
-        if(visits == 6){
-            return true;
-        }
-
         for (int i = 1; i < Integer.MAX_VALUE; i++) {
             int res = 7 * i;
             if (visits == (res)) {
