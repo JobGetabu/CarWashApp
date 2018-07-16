@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.LoginActivity"
     android:background="@drawable/login_bg"
+    android:id="@+id/login_page"
     android:fitsSystemWindows="true"
     >
 

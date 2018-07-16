@@ -96,9 +96,11 @@ public class MainActivity extends AppCompatActivity implements FilterDialogFragm
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         authListner();
 
+
         initList();
 
         String userId = mAuth.getCurrentUser().getUid();
+
         // Create a reference to the clients collection
         final CollectionReference clientRef = mFirestore.collection(CUSTOMERINFOCOL);
         mQuery = clientRef
@@ -163,6 +165,9 @@ public class MainActivity extends AppCompatActivity implements FilterDialogFragm
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
+            sendToLogin();
+        }
+        if (FirebaseAuth.getInstance().getCurrentUser().getUid() == null){
             sendToLogin();
         }
 

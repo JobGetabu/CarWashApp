@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
@@ -46,6 +48,8 @@ public class LoginActivity extends AppCompatActivity {
     public static final String TAG = "GoogleLogInFragment";
 
     GoogleSignInClient mGoogleSignInClient;
+    @BindView(R.id.login_page)
+    ConstraintLayout loginPage;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
@@ -68,6 +72,8 @@ public class LoginActivity extends AppCompatActivity {
 
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        loginPage.setBackground(ContextCompat.getDrawable(this,R.drawable.login_bg));
     }
 
     @OnClick(R.id.login_google)
