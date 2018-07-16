@@ -111,6 +111,7 @@ public class ClientViewHolder extends RecyclerView.ViewHolder {
         itemColName.setText(customerInfo.getFirstname() + " " + customerInfo.getLastname());
         itemColPhonenum.setText(customerInfo.getPhonenumber());
         itemColPrice.setText(rating.getPriceMock(customerInfo.getVehicletype()));
+        itemColImage.setImageDrawable(rating.getImage(mContext, customerInfo.getVehicletype()));
 
         cellName.setText(customerInfo.getFirstname() + " " + customerInfo.getLastname());
         cellTypeVehicle.setText(customerInfo.getVehicletype());

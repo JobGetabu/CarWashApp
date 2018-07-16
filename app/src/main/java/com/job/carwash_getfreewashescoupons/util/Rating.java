@@ -1,5 +1,11 @@
 package com.job.carwash_getfreewashescoupons.util;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
+
+import com.job.carwash_getfreewashescoupons.R;
+
 /**
  * Created by Job on Saturday : 7/14/2018.
  */
@@ -115,6 +121,34 @@ public class Rating {
 
             default:
                 return "";
+        }
+    }
+
+    public Drawable getImage(Context context ,String vehicletype){
+        switch (vehicletype) {
+            case "Car":
+                return ContextCompat.getDrawable(context, R.drawable.ic_car);
+
+            case "Canter":
+                return ContextCompat.getDrawable(context, R.drawable.ic_canter);
+
+            case "Motorbike":
+                return ContextCompat.getDrawable(context, R.drawable.ic_motorcycle);
+
+            case "Nissan":
+                return ContextCompat.getDrawable(context, R.drawable.ic_nissan);
+
+            case "Pickup":
+                return ContextCompat.getDrawable(context, R.drawable.ic_pickup);
+
+            case "Tipper":
+                return ContextCompat.getDrawable(context, R.drawable.ic_tipper);
+
+            case "Trailer":
+                return ContextCompat.getDrawable(context, R.drawable.ic_trailer);
+
+            default:
+                return ContextCompat.getDrawable(context, R.drawable.ic_car);
         }
     }
 
