@@ -15,6 +15,9 @@
     <string name="sign_in_with_google">Sign in with google</string>
     <string name="keep_records">Keep records of all customers in one app</string>
 
+    <!--filter keywords-->
+    <string name="allvehicles">ALL Vehicles</string>
+    <string name="allprices">ALL Prices</string>
     <!-- Price filters -->
     <string-array name="vehicletypes">
         <item>Car</item>
