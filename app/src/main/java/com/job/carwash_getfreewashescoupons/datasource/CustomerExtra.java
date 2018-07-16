@@ -9,18 +9,17 @@ public class CustomerExtra {
     private String name;
     private double visits;
     private double coupons;
-    private double rating;
+
 
     public CustomerExtra() {
     }
 
-    public CustomerExtra(String customerId, String ownerid, String name, int visits, int coupons, double rating) {
+    public CustomerExtra(String customerId, String ownerid, String name, int visits, int coupons) {
         this.customerId = customerId;
         this.ownerid = ownerid;
         this.name = name;
         this.visits = visits;
         this.coupons = coupons;
-        this.rating = rating;
     }
 
     public String getCustomerId() {
@@ -55,13 +54,6 @@ public class CustomerExtra {
         this.coupons = coupons;
     }
 
-    public double getRating() {
-        return rating;
-    }
-
-    public void setRating(double rating) {
-        this.rating = rating;
-    }
 
     public String getOwnerid() {
         return ownerid;
@@ -78,7 +70,6 @@ public class CustomerExtra {
                 ", name='" + name + '\'' +
                 ", visits=" + visits +
                 ", coupons=" + coupons +
-                ", rating=" + rating +
                 '}';
     }
 }

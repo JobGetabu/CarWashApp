@@ -62,7 +62,10 @@ public class AddWashActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
+
     private String clientId;
+    private String clientName;
+    private String clientPhone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,16 +80,20 @@ public class AddWashActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
 
+
+        clientName = getIntent().getStringExtra(CUSTOMERNAMEEXTRA);
+        clientPhone = getIntent().getStringExtra(CUSTOMERPHONEEXTRA);
         clientId = getIntent().getStringExtra(CUSTOMERIDEXTRA);
-        if (clientId != null){
+        if (clientId != null) {
             setUpUi(clientId);
         }
     }
 
     @OnClick(R.id.wash_add_btn)
     public void onViewClicked() {
-        if (validate()){
+        if (validate()) {
 
+            saveToDb();
         }
     }
 
@@ -105,26 +112,22 @@ public class AddWashActivity extends AppCompatActivity {
         pDialog.setCancelable(false);
         pDialog.show();
 
-        Map<String,Object> washMap = new HashMap<>();
-        washMap.put("customerid",clientId);
+        Map<String, Object> washMap = new HashMap<>();
+        washMap.put("customerid", clientId);
         washMap.put("timestamp", FieldValue.serverTimestamp());
-        washMap.put("paid",true);
+        washMap.put("paid", true);
 
         mFirestore.collection(WASHCOL).document()
                 .set(washMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()){
-                            pDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-                            pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismissWithAnimation();
-                                    finish();
-                                }
-                            });
-                        }else {
+                        if (task.isSuccessful()) {
+
+                            updateWashesCount(pDialog);
+
+
+                        } else {
                             pDialog.dismiss();
                             Log.d(TAG, "onComplete: error" + task.getException().toString());
                             errorPrompt();
@@ -174,10 +177,10 @@ public class AddWashActivity extends AppCompatActivity {
                             CustomerInfo customerInfo = dbtask.getResult().toObject(CustomerInfo.class);
                             if (customerInfo != null) {
                                 //set up ui
-                                washName.getEditText().setText(customerInfo.getFirstname()+" "+customerInfo.getLastname());
+                                washName.getEditText().setText(customerInfo.getFirstname() + " " + customerInfo.getLastname());
                                 washVehiclereg.getEditText().setText(customerInfo.getVehiclereg());
 
-                                washSpinner.setSelection(spinPosition(customerInfo.getVehicletype()),true);
+                                washSpinner.setSelection(spinPosition(customerInfo.getVehicletype()), true);
                             }
 
 
@@ -191,27 +194,35 @@ public class AddWashActivity extends AppCompatActivity {
     }
 
     private int spinPosition(String vehicletype) {
-        switch (vehicletype){
-            case "Car": return 0;
+        switch (vehicletype) {
+            case "Car":
+                return 0;
 
-            case "Canter": return 1;
+            case "Canter":
+                return 1;
 
-            case "Motorbike": return 2;
+            case "Motorbike":
+                return 2;
 
-            case "Nissan": return 3;
+            case "Nissan":
+                return 3;
 
-            case "Pickup": return 4;
+            case "Pickup":
+                return 4;
 
-            case "Tipper": return 5;
+            case "Tipper":
+                return 5;
 
-            case "Trailer": return 6;
+            case "Trailer":
+                return 6;
 
-            default: return 0;
+            default:
+                return 0;
         }
     }
 
     //run an update transaction and send sms here
-    private void updateWashesCount(){
+    private void updateWashesCount(final SweetAlertDialog pDialog) {
         final DocumentReference cusRef = mFirestore.collection(CUSTOMEREXTRACOL).document(clientId);
 
         mFirestore.runTransaction(new Transaction.Function<Void>() {
@@ -224,8 +235,12 @@ public class AddWashActivity extends AppCompatActivity {
 
                 int s = new Double(newVisit).intValue();
 
-                if ( CouponLogic.IsCouponReady(s)){
+                if (CouponLogic.IsCouponReady(s)) {
                     //send message
+
+                    String message = "Hi " + clientName + " you're our valued customer \n enjoy your next car wash is COMPLETELY FREE";
+
+                    sendSMS(clientPhone, message);
 
                 }
 
@@ -236,19 +251,30 @@ public class AddWashActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d(TAG, "Transaction success!");
+
+                pDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismissWithAnimation();
+
+                        finish();
+                    }
+                });
             }
         })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "Transaction failure.", e);
+                        pDialog.dismiss();
+                        errorPrompt();
                     }
                 });
     }
 
     //---sends an SMS message to another device---
-    private void sendSMS(String phoneNumber, String message)
-    {
+    private void sendSMS(String phoneNumber, String message) {
         PendingIntent pi = PendingIntent.getActivity(this, 0,
                 new Intent(this, AddWashActivity.class), 0);
         SmsManager sms = SmsManager.getDefault();
