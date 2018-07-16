@@ -76,6 +76,15 @@ public class LoginActivity extends AppCompatActivity {
         loginPage.setBackground(ContextCompat.getDrawable(this,R.drawable.login_bg));
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null){
+            sendToMain();
+        }
+    }
+
     @OnClick(R.id.login_google)
     public void loginWithGoogleClick() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();

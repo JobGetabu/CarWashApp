@@ -27,6 +27,7 @@ import com.google.firebase.firestore.Transaction;
 import com.job.carwash_getfreewashescoupons.R;
 import com.job.carwash_getfreewashescoupons.datasource.CustomerInfo;
 import com.job.carwash_getfreewashescoupons.util.CouponLogic;
+import com.job.carwash_getfreewashescoupons.util.NotificationUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,6 +63,7 @@ public class AddWashActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
+    private NotificationUtil mNotificationUtil;
 
     private String clientId;
     private String clientName;
@@ -79,6 +81,8 @@ public class AddWashActivity extends AppCompatActivity {
         //firebase
         mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
+
+        mNotificationUtil = new NotificationUtil();
 
 
         clientName = getIntent().getStringExtra(CUSTOMERNAMEEXTRA);
@@ -123,6 +127,9 @@ public class AddWashActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
+
+                            //testing notification
+                            mNotificationUtil.showStandardHeadsUpNotification(AddWashActivity.this);
 
                             updateWashesCount(pDialog);
 

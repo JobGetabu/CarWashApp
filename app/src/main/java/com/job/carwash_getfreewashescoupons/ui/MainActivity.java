@@ -90,24 +90,42 @@ public class MainActivity extends AppCompatActivity implements FilterDialogFragm
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
 
+
         //firebase
         mAuth = FirebaseAuth.getInstance();
         mFirestore = FirebaseFirestore.getInstance();
         mUser = FirebaseAuth.getInstance().getCurrentUser();
-        authListner();
 
 
         initList();
 
-        String userId = mAuth.getCurrentUser().getUid();
 
-        // Create a reference to the clients collection
-        final CollectionReference clientRef = mFirestore.collection(CUSTOMERINFOCOL);
-        mQuery = clientRef
-                .whereEqualTo("ownerid", userId)
-                .orderBy("regdate", Query.Direction.DESCENDING);
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user == null) {
+                    // Sign in logic here.
+                    finish();
+                    sendToLogin();
+                }else {
 
-        setUpList();
+
+                    String userId = mAuth.getCurrentUser().getUid();
+
+                    // Create a reference to the clients collection
+                    final CollectionReference clientRef = mFirestore.collection(CUSTOMERINFOCOL);
+                    mQuery = clientRef
+                            .whereEqualTo("ownerid", userId)
+                            .orderBy("regdate", Query.Direction.DESCENDING);
+
+                    setUpList();
+                }
+            }
+        };
+
+        mAuth.addAuthStateListener(mAuthListener);
+
 
         //login credentials
         // Configure Google Sign In
@@ -162,14 +180,17 @@ public class MainActivity extends AppCompatActivity implements FilterDialogFragm
     public void onStart() {
         super.onStart();
 
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser == null) {
-            sendToLogin();
-        }
-        if (FirebaseAuth.getInstance().getCurrentUser().getUid() == null){
-            sendToLogin();
-        }
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                if (firebaseUser == null) {
+                    // do stuff
+                    // Check if user is signed in (non-null) and update UI accordingly.
+                    sendToLogin();
+                }
+            }
+        };
 
         if (adapter != null) {
             adapter.startListening();
@@ -199,6 +220,7 @@ public class MainActivity extends AppCompatActivity implements FilterDialogFragm
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) {
                     // Sign in logic here.
+                    finish();
                     sendToLogin();
                 }
             }
