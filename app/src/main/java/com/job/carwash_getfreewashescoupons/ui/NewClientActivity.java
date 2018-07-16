@@ -14,9 +14,12 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.WriteBatch;
 import com.job.carwash_getfreewashescoupons.R;
+import com.job.carwash_getfreewashescoupons.datasource.CustomerExtra;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +51,8 @@ public class NewClientActivity extends AppCompatActivity {
 
     private static final String TAG = "NewClient";
     private static final String CUSTOMERINFOCOL = "CustomerInfo";
+    private static final String CUSTOMEREXTRACOL = "CustomerExtra";
+
     private PhoneNumberUtil mPhoneNumberUtil;
     private FirebaseAuth mAuth;
     private FirebaseFirestore mFirestore;
@@ -102,8 +107,22 @@ public class NewClientActivity extends AppCompatActivity {
         clientMap.put("ownerid", mAuth.getCurrentUser().getUid());
         clientMap.put("regdate", FieldValue.serverTimestamp());
 
-        mFirestore.collection(CUSTOMERINFOCOL).document(key)
-                .set(clientMap)
+
+        CustomerExtra customerExtra = new CustomerExtra(key,mAuth.getCurrentUser().getUid(),
+                firstname+" "+lname,0,0);
+
+        DocumentReference extraRef = mFirestore.collection(CUSTOMEREXTRACOL).document(key);
+        DocumentReference infoRef = mFirestore.collection(CUSTOMERINFOCOL).document(key);
+
+        WriteBatch batch = mFirestore.batch();  
+
+        batch.set(extraRef,customerExtra);
+        batch.set(infoRef,clientMap);
+
+
+
+        batch
+                .commit()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> dbtask) {
