@@ -235,6 +235,12 @@ public class AddWashActivity extends AppCompatActivity {
 
                 int s = new Double(newVisit).intValue();
 
+                //update coupons
+                if (CouponLogic.IsAcouponWashVisit(s)){
+                    double newCoupon = snapshot.getDouble("coupons") + 1;
+                    transaction.update(cusRef, "coupons", newCoupon);
+                }
+
                 if (CouponLogic.IsCouponReady(s)) {
                     //send message
 

@@ -299,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements FilterDialogFragm
         Query query = mFirestore.collection(CUSTOMERINFOCOL);
 
         query.whereEqualTo("ownerid", mAuth.getCurrentUser().getUid());
-        
+
 
         // vehicle (equality filter)
         if (filters.hasVehicle()) {
@@ -341,5 +341,14 @@ public class MainActivity extends AppCompatActivity implements FilterDialogFragm
                 }
             }
         });
+    }
+
+    private void searchQuery(){
+        // Construct query basic query
+        Query query = mFirestore.collection(CUSTOMERINFOCOL);
+
+        query.whereEqualTo("ownerid", mAuth.getCurrentUser().getUid());
+
+
     }
 }
