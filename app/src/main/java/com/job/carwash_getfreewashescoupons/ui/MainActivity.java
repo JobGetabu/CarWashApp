@@ -34,6 +34,7 @@ import com.google.firebase.firestore.Query;
 import com.job.carwash_getfreewashescoupons.R;
 import com.job.carwash_getfreewashescoupons.datasource.CustomerInfo;
 import com.job.carwash_getfreewashescoupons.util.ClientViewHolder;
+import com.job.carwash_getfreewashescoupons.util.Filter;
 import com.ramotion.foldingcell.FoldingCell;
 
 import butterknife.BindView;
@@ -41,7 +42,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FilterDialogFragment.FilterListener{
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -268,5 +269,19 @@ public class MainActivity extends AppCompatActivity {
                 LinearLayoutManager(this.getApplicationContext(), LinearLayoutManager.VERTICAL, false);
         mainClientlist.setLayoutManager(linearLayoutManager);
         mainClientlist.setHasFixedSize(true);
+    }
+
+    @Override
+    public void onFilter(Filter filters) {
+
+        // Construct query basic query
+        Query query = mFirestore.collection(CUSTOMERINFOCOL);
+
+        // vehicle (equality filter)
+        if (filters.hasVehicle()) {
+            query = query.whereEqualTo("vehicletype", filters.getVehicle());
+        }
+
+        query.orderBy("regdate",filters.getDateDirection());
     }
 }

@@ -55,9 +55,6 @@ public class FilterDialogFragment extends DialogFragment {
     @BindView(R.id.spinner_vehicle)
     Spinner mVehicleSpinner;
 
-    @BindView(R.id.spinner_price)
-    Spinner mPriceSpinner;
-
     private FilterViewModel mViewModel;
 
     private FilterListener mFilterListener;
@@ -105,7 +102,6 @@ public class FilterDialogFragment extends DialogFragment {
 
 
         mViewModel.setDateMediatorLiveData(mDateSpinner.getSelectedItem().toString());
-        mViewModel.setPriceMediatorLiveData(mPriceSpinner.getSelectedItem().toString());
         mViewModel.setVehicleMediatorLiveData(mVehicleSpinner.getSelectedItem().toString());
 
         if (mFilterListener != null) {
@@ -130,15 +126,6 @@ public class FilterDialogFragment extends DialogFragment {
         }
     }
 
-    @Nullable
-    private String getSelectedPrice() {
-        String selected = (String) mPriceSpinner.getSelectedItem();
-        if (getString(R.string.allprices).equals(selected)) {
-            return null;
-        } else {
-            return selected;
-        }
-    }
 
     @Nullable
     private Query.Direction getDateDirection() {
@@ -155,7 +142,7 @@ public class FilterDialogFragment extends DialogFragment {
     public void resetFilters() {
         if (mRootView != null) {
             mDateSpinner.setSelection(0);
-            mPriceSpinner.setSelection(0);
+
             mVehicleSpinner.setSelection(0);
         }
     }
@@ -164,9 +151,8 @@ public class FilterDialogFragment extends DialogFragment {
         Filter filters = new Filter();
 
         if (mRootView != null) {
-            filters.setPrice(getSelectedPrice());
+            filters.setVehicle(getSelectedVehicle());
             filters.setDateDirection(getDateDirection());
-            filters.setPrice(getSelectedPrice());
         }
 
         return filters;
