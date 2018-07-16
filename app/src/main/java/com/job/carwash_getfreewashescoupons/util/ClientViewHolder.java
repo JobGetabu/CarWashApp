@@ -119,7 +119,7 @@ public class ClientViewHolder extends RecyclerView.ViewHolder {
 
         cusID = customerInfo.getCustomerId();
         cusPhone = customerInfo.getPhonenumber();
-        cusName = customerInfo.getFirstname() +" "+customerInfo.getLastname();
+        cusName = customerInfo.getFirstname() + " " + customerInfo.getLastname();
     }
 
 
@@ -165,7 +165,7 @@ public class ClientViewHolder extends RecyclerView.ViewHolder {
     private void setWashData(String customerId) {
         mFirestore.collection(WASHCOL)
                 .orderBy("timestamp", Query.Direction.DESCENDING)
-                .whereEqualTo("customerId", customerId)
+                .whereEqualTo("customerid", customerId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -179,10 +179,13 @@ public class ClientViewHolder extends RecyclerView.ViewHolder {
 
                                             List<DocumentSnapshot> washdocs = task.getResult().getDocuments();
 
-                                            Log.d(TAG, "run: wash list 0 => "+washdocs.get(0));
+                                            Log.d(TAG, "run: wash list 0 => " + washdocs.get(0));
                                             dealTime(washdocs.get(0).getTimestamp("timestamp"));
                                         }
                                     });
+                        } else {
+                            Log.e(TAG, "error ", task.getException());
+
                         }
                     }
                 });
@@ -196,14 +199,14 @@ public class ClientViewHolder extends RecyclerView.ViewHolder {
             Calendar c = Calendar.getInstance();
             c.setTime(date);
             DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-            DateFormat timeFormat = new SimpleDateFormat("hh:mm:ss");
+            DateFormat yearFormat = new SimpleDateFormat("yyyy");
 
 
             String day = rating.getDay(c.get(Calendar.DAY_OF_WEEK));
             int daydate = c.get(Calendar.DAY_OF_MONTH);
 
             cellDate.setText(day + " " + daydate);
-            cellYear.setText(c.get(Calendar.YEAR));
+            cellYear.setText(yearFormat.format(date));
 
         }
     }
