@@ -115,7 +115,7 @@ public class ClientViewHolder extends RecyclerView.ViewHolder {
         cellName.setText(customerInfo.getFirstname() + " " + customerInfo.getLastname());
         cellTypeVehicle.setText(customerInfo.getVehicletype());
         cellVehicleReg.setText(customerInfo.getVehiclereg());
-        itemColPrice.setText(rating.getPrice(customerInfo.getVehicletype()));
+        cellCost.setText(rating.getPrice(customerInfo.getVehicletype()));
 
         cusID = customerInfo.getCustomerId();
         cusPhone = customerInfo.getPhonenumber();
@@ -143,9 +143,12 @@ public class ClientViewHolder extends RecyclerView.ViewHolder {
 
                                             if (customerExtra != null) {
 
-                                                cellVisits.setText(String.valueOf(customerExtra.getVisits()));
-                                                cellCoupon.setText(String.valueOf(customerExtra.getCoupons()));
+
+                                                cellVisits.setText(String.valueOf(new Double(customerExtra.getVisits()).intValue()));
+                                                cellCoupon.setText(String.valueOf(new Double(customerExtra.getCoupons()).intValue()));
                                                 cellRatingNums.setText("(" + customerExtra.getVisits() + ")");
+                                                itemColRating.setStepSize(0.5f);
+                                                cellRatingStars.setStepSize(0.5f);
                                                 itemColRating.setRating(rating.setRating(customerExtra.getVisits()));
                                                 cellRatingStars.setRating(rating.setRating(customerExtra.getVisits()));
 

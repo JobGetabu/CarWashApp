@@ -238,7 +238,7 @@ public class AddWashActivity extends AppCompatActivity {
                 if (CouponLogic.IsCouponReady(s)) {
                     //send message
 
-                    String message = "Hi " + clientName + " you're our valued customer \n enjoy your next car wash is COMPLETELY FREE";
+                    String message = "Hi " + clientName + " you're our valued customer \n enjoy your next car wash COMPLETELY FREE";
 
                     sendSMS(clientPhone, message);
 
@@ -257,7 +257,6 @@ public class AddWashActivity extends AppCompatActivity {
                     @Override
                     public void onClick(SweetAlertDialog sDialog) {
                         sDialog.dismissWithAnimation();
-
                         finish();
                     }
                 });
