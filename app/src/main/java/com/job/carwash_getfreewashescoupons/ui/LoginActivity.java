@@ -108,6 +108,8 @@ public class LoginActivity extends AppCompatActivity {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e);
                 // ...
+                Snackbar.make(findViewById(android.R.id.content),"Google sign in failed",Snackbar.LENGTH_LONG).show();
+                mBtnGoogleLogin.setEnabled(true);
             }
         }
     }
