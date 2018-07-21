@@ -1,11 +1,14 @@
 package com.job.carwash_getfreewashescoupons.datasource;
 
 
+import android.support.annotation.Keep;
+
 import com.google.firebase.Timestamp;
 
 /**
  * Created by Job on Saturday : 7/14/2018.
  */
+@Keep
 public class Wash {
     private Timestamp timestamp;
     private String customerid;

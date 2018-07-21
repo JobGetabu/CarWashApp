@@ -1,8 +1,12 @@
 package com.job.carwash_getfreewashescoupons.datasource;
 
+import android.support.annotation.Keep;
+
 /**
  * Created by Job on Saturday : 7/14/2018.
  */
+
+@Keep
 public class CustomerExtra {
     private String customerId;
     private String ownerid;

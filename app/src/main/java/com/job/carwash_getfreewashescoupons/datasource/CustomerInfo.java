@@ -2,12 +2,14 @@ package com.job.carwash_getfreewashescoupons.datasource;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Keep;
 
 import com.google.firebase.Timestamp;
 
 /**
  * Created by Job on Saturday : 7/14/2018.
  */
+@Keep
 public class CustomerInfo implements Parcelable {
 
     private String customerId;

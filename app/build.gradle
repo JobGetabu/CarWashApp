@@ -33,8 +33,9 @@ android {
 
             signingConfig signingConfigs.release
 
-            //minifyEnabled false
-            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
@@ -77,9 +78,6 @@ dependencies {
 
     //rating bar
     implementation 'me.zhanghai.android.materialratingbar:library:1.2.0'
-
-    //picasso
-    implementation 'com.squareup.picasso:picasso:2.71828'
 
     //architecture components
     // ViewModel and LiveData

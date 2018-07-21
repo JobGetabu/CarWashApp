@@ -19,3 +19,22 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Retain generated class which implement Unbinder.
+-keep public class * implements butterknife.Unbinder { public <init>(**, android.view.View); }
+
+# Prevent obfuscation of types which use ButterKnife annotations since the simple name
+# is used to reflectively look up the generated ViewBinding.
+-keep class butterknife.*
+-keepclasseswithmembernames class * { @butterknife.* <methods>; }
+-keepclasseswithmembernames class * { @butterknife.* <fields>; }
+
+-keep class cn.pedant.SweetAlert.Rotate3dAnimation {
+    public <init>(...);
+ }
+
+ #my datasource
+ -keep public class com.job.carwash_getfreewashescoupons.datasource.CustomerExtra
+ -keep public class com.job.carwash_getfreewashescoupons.datasource.CustomerInfo
+ -keep public class com.job.carwash_getfreewashescoupons.datasource.User
+ -keep public class com.job.carwash_getfreewashescoupons.datasource.Wash
